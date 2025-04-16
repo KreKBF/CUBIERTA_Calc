@@ -34,7 +34,7 @@ export default function DeckAreaCalculator() {
 
   return (
     <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
-      <h2>Deck Coverage Estimator</h2>
+      <h2>Calculadora: Kit de inicio para cubierta</h2>
       <div>
         <label>
           Boat Length (m):
