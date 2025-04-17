@@ -39,20 +39,20 @@ export default function DeckAreaCalculator() {
       <div className="calculator">
         <h2>Calculadora: Kit de inicio para cubierta</h2>
         <label>
-          Eslora (m):
-          <input
-            type="number"
-            value={length}
-            onChange={(e) => setLength(parseFloat(e.target.value))}
-          />
+         height (m):
+        <input
+         type="number"
+         value={length}
+         onChange={(e) => setLength(parseFloat(e.target.value))}
+      />
         </label>
         <label>
-          Manga (m):
-          <input
-            type="number"
-            value={beam}
-            onChange={(e) => setBeam(parseFloat(e.target.value))}
-          />
+         width (m):
+        <input
+         type="number"
+         value={beam}
+         onChange={(e) => setBeam(parseFloat(e.target.value))}
+      />
         </label>
         <h4>¿Qué zonas deseas incluir?</h4>
         <p>
