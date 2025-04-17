@@ -11,7 +11,7 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
       {/* Foredeck */}
       <g onClick={() => onZoneToggle("foredeck")} style={{ cursor: "pointer" }}>
         <polygon
-          points="200,40 260,140 140,140"
+          points="100,140 140,140 140,340 100,340"
           fill={zones.foredeck ? "#0077b6" : "#d9d9d9"}
           stroke="#333"
         />
@@ -53,12 +53,12 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
       {/* Side Decks */}
       <g onClick={() => onZoneToggle("sideDecks")} style={{ cursor: "pointer" }}>
         <polygon
-          points="100,140 140,140 140,280 100,280"
+          points="100,140 140,140 140,340 100,340"
           fill={zones.sideDecks ? "#0077b6" : "#d9d9d9"}
           stroke="#333"
         />
         <polygon
-          points="300,140 260,140 260,280 300,280"
+          points="300,140 260,140 260,340 300,340"
           fill={zones.sideDecks ? "#0077b6" : "#d9d9d9"}
           stroke="#333"
         />
