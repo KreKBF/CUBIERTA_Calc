@@ -39,8 +39,8 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
       <g onClick={() => onZoneToggle("flybridge")} style={{ cursor: "pointer" }}>
         <rect
           x="170"
-          y="155"
-          width="80"
+          y="165"
+          width="60"
           height="120"
           fill={zones.flybridge ? "#023e8a" : "#bdbdbd"}
           stroke="#333"
@@ -69,11 +69,11 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
     {/* Swim Platform */}
       <g onClick={() => onZoneToggle("swimPlatform")} style={{ cursor: "pointer" }}>
        <polygon
-         points="100,340 300,340 280,430 120,430"
+         points="100,360 300,360 280,450 120,450"
          fill={zones.swimPlatform ? "#0077b6" : "#d9d9d9"}
          stroke="#333"
         />
-      <text x="200" y="400" textAnchor="middle" fill="#fff" fontSize="14">
+      <text x="200" y="430" textAnchor="middle" fill="#fff" fontSize="14">
       Swim Platform
       </text>
       </g>
