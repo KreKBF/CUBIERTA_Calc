@@ -49,3 +49,16 @@
   font-size: 16px;
   margin-top: 4px;
 }
+.calculator label {
+  display: block;
+  max-width: 420px;
+  margin-bottom: 12px;
+}
+
+.calculator input {
+  width: 100%;
+  max-width: 420px;
+  padding: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
