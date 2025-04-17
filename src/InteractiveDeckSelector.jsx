@@ -69,7 +69,7 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
     {/* Swim Platform */}
       <g onClick={() => onZoneToggle("swimPlatform")} style={{ cursor: "pointer" }}>
        <polygon
-         points="100,400 300,400 280,490 120,490"
+         points="100,380 300,380 280,490 120,490"
          fill={zones.swimPlatform ? "#0077b6" : "#d9d9d9"}
          stroke="#333"
         />
