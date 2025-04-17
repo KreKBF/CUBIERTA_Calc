@@ -1,9 +1,10 @@
 import InteractiveDeckSelector from "./InteractiveDeckSelector";
 import React, { useState } from "react";
+import "./InteractiveDeckSelector.css"; // подключим стили прямо тут
 
 export default function DeckAreaCalculator() {
-  const [length, setLength] = useState(10); // в метрах
-  const [beam, setBeam] = useState(3.5); // ширина лодки
+  const [length, setLength] = useState(10);
+  const [beam, setBeam] = useState(3.5);
   const [zones, setZones] = useState({
     cockpit: true,
     sideDecks: true,
@@ -20,7 +21,7 @@ export default function DeckAreaCalculator() {
     flybridge: 0.1,
   };
 
-  const pricePerSqM = 18; // €/м²
+  const pricePerSqM = 18;
 
   const selectedFactor = Object.entries(zones)
     .filter(([_, active]) => active)
@@ -34,38 +35,39 @@ export default function DeckAreaCalculator() {
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
-      <h2>Calculadora: Kit de inicio para cubierta</h2>
-      <div>
+    <div className="container">
+      <div className="calculator">
+        <h2>Calculadora: Kit de inicio para cubierta</h2>
         <label>
-          Boat Length (m):
+          Eslora (m):
           <input
             type="number"
             value={length}
             onChange={(e) => setLength(parseFloat(e.target.value))}
           />
         </label>
-      </div>
-      <div>
         <label>
-          Boat Width (Beam, m):
+          Manga (m):
           <input
             type="number"
             value={beam}
             onChange={(e) => setBeam(parseFloat(e.target.value))}
           />
         </label>
-      </div>
-      <h4>¿Qué zonas deseas incluir?</h4>
-      <InteractiveDeckSelector zones={zones} onZoneToggle={handleZoneToggle} />
-      <div>
+        <h4>¿Qué zonas deseas incluir?</h4>
         <p>
-          <strong>Estimated Area:</strong> {area} m²
+          <strong>Superficie estimada:</strong> {area} m²
         </p>
         <p>
-          <strong>Estimated Price:</strong> €{price}
+          <strong>Precio estimado del kit:</strong> €{price}
         </p>
       </div>
+
+      <InteractiveDeckSelector
+        zones={zones}
+        onZoneToggle={handleZoneToggle}
+      />
     </div>
   );
 }
+
