@@ -30,3 +30,22 @@
   display: block;
   margin: 0 auto;
 }
+.input-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  max-width: 420px;
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+.input-row label {
+  flex: 1 1 180px;
+}
+
+.input-row input {
+  width: 100%;
+  padding: 6px 10px;
+  font-size: 16px;
+  margin-top: 4px;
+}
