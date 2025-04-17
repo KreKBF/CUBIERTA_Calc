@@ -1,24 +1,30 @@
 .container {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
+  justify-content: space-between;
   align-items: flex-start;
+  padding: 20px;
+  gap: 40px;
 }
 
 .calculator {
-  flex: 1;
-  min-width: 320px;
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex: 1 1 300px;
+  min-width: 300px;
+  max-width: 100%;
+  font-size: 16px;
+}
+
+.calculator input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  margin-bottom: 12px;
+  font-size: 16px;
 }
 
 .deck-schematic {
-  flex: 1;
-  max-width: 300px;
-  min-width: 220px;
+  flex: 1 1 300px;
+  max-width: 600px;
   width: 100%;
   height: auto;
   display: block;
