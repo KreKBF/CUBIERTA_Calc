@@ -1,65 +1,85 @@
-import React, { useState } from "react";
+import React from "react";
 import "./InteractiveDeckSelector.css";
 
 export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
-  const zoneList = [
-    { id: "cockpit", label: "Cockpit" },
-    { id: "sideDecks", label: "Side Decks" },
-    { id: "foredeck", label: "Foredeck" },
-    { id: "swimPlatform", label: "Swim Platform" },
-    { id: "flybridge", label: "Flybridge" }
-  ];
-
   return (
     <svg
-      viewBox="0 0 400 800"
+      viewBox="0 0 300 700"
       xmlns="http://www.w3.org/2000/svg"
       className="deck-schematic"
     >
-      {/* Background silhouette (placeholder shape) */}
-      <rect x="80" y="50" width="240" height="700" rx="40" ry="40" fill="#f2f2f2" />
+      {/* Корпус лодки */}
+      <path
+        d="M150,0 C180,20 200,80 200,350 C200,620 180,680 150,700 C120,680 100,620 100,350 C100,80 120,20 150,0 Z"
+        fill="#f2f2f2"
+        stroke="#333"
+        strokeWidth="2"
+      />
 
-      {zoneList.map((zone, index) => {
-        const zonePositions = {
-          cockpit: { x: 120, y: 400, w: 160, h: 120 },
-          sideDecks: { x: 90, y: 300, w: 220, h: 300 },
-          foredeck: { x: 120, y: 100, w: 160, h: 100 },
-          swimPlatform: { x: 140, y: 620, w: 120, h: 50 },
-          flybridge: { x: 120, y: 20, w: 160, h: 40 }
-        };
+      {/* Foredeck */}
+      <rect
+        x="120"
+        y="60"
+        width="60"
+        height="80"
+        fill={zones.foredeck ? "#0077b6" : "#d9d9d9"}
+        stroke="#333"
+        rx="6"
+        onClick={() => onZoneToggle("foredeck")}
+        style={{ cursor: "pointer" }}
+      />
+      <text x="150" y="100" textAnchor="middle" fill="#fff" fontSize="10">
+        Foredeck
+      </text>
 
-        const pos = zonePositions[zone.id];
+      {/* Cockpit */}
+      <rect
+        x="110"
+        y="160"
+        width="80"
+        height="120"
+        fill={zones.cockpit ? "#0077b6" : "#d9d9d9"}
+        stroke="#333"
+        rx="6"
+        onClick={() => onZoneToggle("cockpit")}
+        style={{ cursor: "pointer" }}
+      />
+      <text x="150" y="220" textAnchor="middle" fill="#fff" fontSize="10">
+        Cockpit
+      </text>
 
-        return (
-          <g
-            key={zone.id}
-            onClick={() => onZoneToggle(zone.id)}
-            style={{ cursor: "pointer" }}
-          >
-            <rect
-              x={pos.x}
-              y={pos.y}
-              width={pos.w}
-              height={pos.h}
-              fill={zones[zone.id] ? "#0077b6" : "#d9d9d9"}
-              stroke="#333"
-              strokeWidth="2"
-              rx="8"
-            />
-            <text
-              x={pos.x + pos.w / 2}
-              y={pos.y + pos.h / 2}
-              textAnchor="middle"
-              alignmentBaseline="middle"
-              fill="#fff"
-              fontSize="12"
-              fontWeight="bold"
-            >
-              {zone.label}
-            </text>
-          </g>
-        );
-      })}
+      {/* Side Decks */}
+      <rect
+        x="85"
+        y="300"
+        width="130"
+        height="180"
+        fill={zones.sideDecks ? "#0077b6" : "#d9d9d9"}
+        stroke="#333"
+        rx="6"
+        onClick={() => onZoneToggle("sideDecks")}
+        style={{ cursor: "pointer" }}
+      />
+      <text x="150" y="390" textAnchor="middle" fill="#fff" fontSize="10">
+        Side Decks
+      </text>
+
+      {/* Swim Platform */}
+      <rect
+        x="120"
+        y="510"
+        width="60"
+        height="40"
+        fill={zones.swimPlatform ? "#0077b6" : "#d9d9d9"}
+        stroke="#333"
+        rx="6"
+        onClick={() => onZoneToggle("swimPlatform")}
+        style={{ cursor: "pointer" }}
+      />
+      <text x="150" y="535" textAnchor="middle" fill="#fff" fontSize="10">
+        Swim Platform
+      </text>
     </svg>
   );
 }
+
