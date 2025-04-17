@@ -55,6 +55,18 @@ export default function DeckAreaCalculator() {
      />
         </label>
         <h4>¿Qué zonas deseas incluir?</h4>
+            <div className="zone-checkboxes">
+  {Object.entries(zones).map(([zone, active]) => (
+    <label key={zone} style={{ display: "block", marginBottom: "8px" }}>
+      <input
+        type="checkbox"
+        checked={active}
+        onChange={() => handleZoneToggle(zone)}
+      />
+      {zone.charAt(0).toUpperCase() + zone.slice(1)}
+    </label>
+  ))}
+</div>
         <p>
           <strong>Superficie estimada:</strong> {area} m²
         </p>
