@@ -1,6 +1,23 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.calculator {
+  flex: 1;
+  min-width: 280px;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .deck-schematic {
+  flex: 1;
   max-width: 100%;
   height: auto;
-  margin: 20px auto;
-  display: block;
+  min-width: 200px;
 }
