@@ -70,3 +70,16 @@
   margin-bottom: 20px;
   font-size: 16px;
 }
+.zone-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.zone-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
