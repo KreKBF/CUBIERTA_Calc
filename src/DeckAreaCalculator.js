@@ -38,7 +38,6 @@ export default function DeckAreaCalculator() {
     <div className="container">
       <div className="calculator">
         <h2>Calculadora: Kit de inicio para cubierta</h2>
-        <div className="input-row">
         <label>
          Length (m):
          <input
@@ -55,7 +54,6 @@ export default function DeckAreaCalculator() {
           onChange={(e) => setBeam(parseFloat(e.target.value))}
      />
         </label>
-    </div>
         <h4>¿Qué zonas deseas incluir?</h4>
         <p>
           <strong>Superficie estimada:</strong> {area} m²
