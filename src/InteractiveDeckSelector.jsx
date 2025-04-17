@@ -4,82 +4,82 @@ import "./InteractiveDeckSelector.css";
 export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
   return (
     <svg
-      viewBox="0 0 300 700"
+      viewBox="0 0 300 600"
       xmlns="http://www.w3.org/2000/svg"
       className="deck-schematic"
     >
-      {/* Корпус лодки */}
-      <path
-        d="M150,0 C180,20 200,80 200,350 C200,620 180,680 150,700 C120,680 100,620 100,350 C100,80 120,20 150,0 Z"
-        fill="#f2f2f2"
-        stroke="#333"
-        strokeWidth="2"
-      />
-
-      {/* Foredeck */}
+      {/* Foredeck (triangle) */}
       <g onClick={() => onZoneToggle("foredeck")}
          style={{ cursor: "pointer" }}>
-        <rect
-          x="120"
-          y="60"
-          width="60"
-          height="80"
+        <polygon
+          points="150,20 190,80 110,80"
           fill={zones.foredeck ? "#0077b6" : "#d9d9d9"}
           stroke="#333"
-          rx="6"
         />
-        <text x="150" y="100" textAnchor="middle" fill="#fff" fontSize="10">
+        <text x="150" y="60" textAnchor="middle" fill="#fff" fontSize="10">
           Foredeck
         </text>
       </g>
 
-      {/* Cockpit */}
+      {/* Cockpit (rectangle) */}
       <g onClick={() => onZoneToggle("cockpit")}
          style={{ cursor: "pointer" }}>
         <rect
           x="110"
-          y="160"
+          y="80"
           width="80"
-          height="120"
+          height="100"
           fill={zones.cockpit ? "#0077b6" : "#d9d9d9"}
           stroke="#333"
-          rx="6"
         />
-        <text x="150" y="220" textAnchor="middle" fill="#fff" fontSize="10">
+        <text x="150" y="130" textAnchor="middle" fill="#fff" fontSize="10">
           Cockpit
         </text>
       </g>
 
-      {/* Side Decks */}
-      <g onClick={() => onZoneToggle("sideDecks")}
+      {/* Flybridge (square inside cockpit) */}
+      <g onClick={() => onZoneToggle("flybridge")}
          style={{ cursor: "pointer" }}>
         <rect
-          x="85"
-          y="300"
-          width="130"
-          height="180"
+          x="130"
+          y="95"
+          width="40"
+          height="40"
+          fill={zones.flybridge ? "#023e8a" : "#bdbdbd"}
+          stroke="#333"
+        />
+        <text x="150" y="118" textAnchor="middle" fill="#fff" fontSize="8">
+          Flybridge
+        </text>
+      </g>
+
+      {/* Side Decks (trapezoids) */}
+      <g onClick={() => onZoneToggle("sideDecks")}
+         style={{ cursor: "pointer" }}>
+        <polygon
+          points="90,80 105,80 105,300 90,320"
           fill={zones.sideDecks ? "#0077b6" : "#d9d9d9"}
           stroke="#333"
-          rx="6"
         />
-        <text x="150" y="390" textAnchor="middle" fill="#fff" fontSize="10">
+        <polygon
+          points="195,80 190,80 190,300 195,320"
+          fill={zones.sideDecks ? "#0077b6" : "#d9d9d9"}
+          stroke="#333"
+        />
+        <text x="150" y="250" textAnchor="middle" fill="#fff" fontSize="10">
           Side Decks
         </text>
       </g>
 
-      {/* Swim Platform */}
+      {/* Swim Platform (trapezoid bottom) */}
       <g onClick={() => onZoneToggle("swimPlatform")}
          style={{ cursor: "pointer" }}>
-        <rect
-          x="120"
-          y="510"
-          width="60"
-          height="40"
+        <polygon
+          points="100,320 200,320 180,360 120,360"
           fill={zones.swimPlatform ? "#0077b6" : "#d9d9d9"}
           stroke="#333"
-          rx="6"
         />
-        <text x="150" y="535" textAnchor="middle" fill="#fff" fontSize="10">
+        <text x="150" y="345" textAnchor="middle" fill="#fff" fontSize="10">
           Swim Platform
         </text>
       </g>
