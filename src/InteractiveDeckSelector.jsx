@@ -30,7 +30,7 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
           fill={zones.cockpit ? "#0077b6" : "#d9d9d9"}
           stroke="#333"
         />
-        <text x="200" y="210" textAnchor="middle" fill="#fff" fontSize="14">
+        <text x="200" y="330" textAnchor="middle" fill="#fff" fontSize="14">
           Cockpit
         </text>
       </g>
