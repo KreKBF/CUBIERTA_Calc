@@ -1,3 +1,4 @@
+import InteractiveDeckSelector from "./InteractiveDeckSelector";
 import React, { useState } from "react";
 
 export default function DeckAreaCalculator() {
@@ -55,18 +56,8 @@ export default function DeckAreaCalculator() {
           />
         </label>
       </div>
-      <div>
-        {Object.keys(zones).map((zone) => (
-          <label key={zone}>
-            <input
-              type="checkbox"
-              checked={zones[zone]}
-              onChange={() => handleZoneToggle(zone)}
-            />
-            {zone}
-          </label>
-        ))}
-      </div>
+      <h4>¿Qué zonas deseas incluir?</h4>
+      <InteractiveDeckSelector zones={zones} onZoneToggle={handleZoneToggle} />
       <div>
         <p>
           <strong>Estimated Area:</strong> {area} m²
