@@ -53,17 +53,17 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
       {/* Side Decks */}
       <g onClick={() => onZoneToggle("sideDecks")} style={{ cursor: "pointer" }}>
         <polygon
-          points="100,140 140,140 140,380 100,380"
+          points="120,140 140,140 140,380 120,380"
           fill={zones.sideDecks ? "#0077b6" : "#d9d9d9"}
           stroke="#333"
         />
         <polygon
-          points="300,140 260,140 260,380 300,380"
+          points="280,140 260,140 260,380 280,380"
           fill={zones.sideDecks ? "#0077b6" : "#d9d9d9"}
           stroke="#333"
         />
         <text
-          x="115"
+          x="130"
           y="260"
           transform="rotate(-90 115,260)"
           textAnchor="middle"
@@ -73,7 +73,7 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
           Side Deck
         </text>
         <text
-          x="285"
+          x="270"
           y="260"
           transform="rotate(90 285,260)"
           textAnchor="middle"
