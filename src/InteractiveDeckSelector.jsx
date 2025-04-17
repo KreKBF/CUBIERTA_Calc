@@ -41,7 +41,7 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
           x="170"
           y="165"
           width="60"
-          height="60"
+          height="120"
           fill={zones.flybridge ? "#023e8a" : "#bdbdbd"}
           stroke="#333"
         />
