@@ -66,20 +66,16 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
           Side Decks
         </text>
       </g>
-
-      {/* Swim Platform */}
-      <g
-        onClick={() => onZoneToggle("swimPlatform")}
-        style={{ cursor: "pointer" }}
-      >
-        <polygon
-          points="140,520 260,520 240,580 160,580"
-          fill={zones.swimPlatform ? "#0077b6" : "#d9d9d9"}
-          stroke="#333"
+    {/* Swim Platform */}
+      <g onClick={() => onZoneToggle("swimPlatform")} style={{ cursor: "pointer" }}>
+       <polygon
+         points="100,340 300,340 280,400 120,400"
+         fill={zones.swimPlatform ? "#0077b6" : "#d9d9d9"}
+         stroke="#333"
         />
-        <text x="200" y="560" textAnchor="middle" fill="#fff" fontSize="14">
-          Swim Platform
-        </text>
+      <text x="200" y="380" textAnchor="middle" fill="#fff" fontSize="14">
+      Swim Platform
+      </text>
       </g>
     </svg>
   );
