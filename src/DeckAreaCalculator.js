@@ -56,12 +56,13 @@ export default function DeckAreaCalculator() {
         </label>
         <h4>¿Qué zonas deseas incluir?</h4>
             <div className="zone-checkboxes">
-  {Object.entries(zones).map(([zone, active]) => (
-    <label key={zone} style={{ display: "block", marginBottom: "8px" }}>
-      <input
-        type="checkbox"
-        checked={active}
-        onChange={() => handleZoneToggle(zone)}
+            {Object.entries(zones).map(([zone, active]) => (
+            <label key={zone} style={{ display: "flex", alignItems: "center",
+    gap: "8px", marginBottom: "8px" }}>
+        <input
+          type="checkbox"
+          checked={active}
+          onChange={() => handleZoneToggle(zone)}
       />
       {zone.charAt(0).toUpperCase() + zone.slice(1)}
     </label>
