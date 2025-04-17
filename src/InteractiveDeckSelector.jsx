@@ -45,7 +45,7 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
           fill={zones.flybridge ? "#023e8a" : "#bdbdbd"}
           stroke="#333"
         />
-        <text x="200" y="200" textAnchor="middle" fill="#fff" fontSize="10">
+        <text x="200" y="230" textAnchor="middle" fill="#fff" fontSize="10">
           Flybridge
         </text>
       </g>
