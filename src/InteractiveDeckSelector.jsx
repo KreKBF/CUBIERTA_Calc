@@ -11,7 +11,7 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
       {/* Foredeck */}
       <g onClick={() => onZoneToggle("foredeck")} style={{ cursor: "pointer" }}>
         <polygon
-          points="200,20 300,140 100,140"
+          points="200,5 300,140 100,140"
           fill={zones.foredeck ? "#0077b6" : "#d9d9d9"}
           stroke="#333"
         />
@@ -91,7 +91,7 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
          fill={zones.swimPlatform ? "#0077b6" : "#d9d9d9"}
          stroke="#333"
         />
-      <text x="200" y="470" textAnchor="middle" fill="#fff" fontSize="14">
+      <text x="200" y="420" textAnchor="middle" fill="#fff" fontSize="14">
       Swim Platform
       </text>
       </g>
