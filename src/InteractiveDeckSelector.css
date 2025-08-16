@@ -22,20 +22,18 @@
   font-size: 16px;
 }
 .svg-wrapper {
-  width: 100%;
-  max-width: 600px;
-  padding-top: 80px;        /* ⬅️ отступ вниз от верха контейнера */
-  margin: 0 auto;
-  overflow: hidden;
+  flex: 1 1 50%;
+  padding-top: 80px;
   display: flex;
-  align-items: flex-start;  /* ⬅️ начало сверху */;
+  align-items: flex-start;
   justify-content: center;
-  height: calc(100vh - 80px); /* ⬅️ полный экран минус отступ. Устанавливаем высоту, соответствующую viewBox */
+  height: calc(100vh - 100px); /* задаёт почти весь экран */
 }
 
 .deck-schematic {
+  height: 100%; /* тянется по высоте wrapper */
   width: auto;
-  height: 100%; /* ⬅️ SVG занимает всю доступную высоту */
+  max-height: 100%;
   display: block;
 }
 
