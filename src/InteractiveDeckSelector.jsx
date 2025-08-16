@@ -127,8 +127,8 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
 </text>
 
 <text
-  x="270"
-  y="447"
+  x="230"
+  y="453"
   textAnchor="middle"
   fontSize="28"
   fontWeight="bold"
