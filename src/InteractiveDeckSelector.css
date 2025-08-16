@@ -24,13 +24,13 @@
 .svg-wrapper {
   width: 100%;
   max-width: 600px;
-  height: 90vh; /* ⬅️ Устанавливаем высоту, соответствующую viewBox */
+  padding-top: 80px;        /* ⬅️ отступ вниз от верха контейнера */
   margin: 0 auto;
   overflow: hidden;
   display: flex;
   align-items: flex-start;  /* ⬅️ начало сверху */;
   justify-content: center;
-  padding-top: 80px;        /* ⬅️ отступ вниз от верха контейнера */
+  height: calc(100vh - 80px); /* ⬅️ полный экран минус отступ. Устанавливаем высоту, соответствующую viewBox */
 }
 
 .deck-schematic {
