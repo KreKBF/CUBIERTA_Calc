@@ -44,7 +44,7 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
 >
   <rect
     x="70"
-    y="305"          // Поднято ещё на 10px
+    y="308"          // Поднято ещё на 10px
     width="155"
     height="120"
     rx="30"
