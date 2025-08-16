@@ -30,7 +30,7 @@
   display: flex;
   align-items: flex-start;  /* ⬅️ начало сверху */;
   justify-content: center;
-  padding-top: 40px;        /* ⬅️ отступ вниз от верха контейнера */
+  padding-top: 80px;        /* ⬅️ отступ вниз от верха контейнера */
 }
 
 .deck-schematic {
