@@ -10,6 +10,14 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
       preserveAspectRatio="xMidYMid meet"
       className="deck-schematic"
     >
+
+  {/* Обводка лодки (фон, не кликабельная) */}
+  <path
+    d="M146.75,0c62.14,18.15,123.21,103.28,137.07,175.53,22.71,182.69,3.7,424.73-20.72,540.82-6.81,16.48-25.36,23.87-42.54,24.9-22.68,2.51-50.87,3-73.81,3.08-24.62-.11-53.97-.65-76.68-3.5-14.37-1.36-29.01-7.22-36.68-19.93-3.69-6.06-5.03-11.83-6.13-17.75C8.99,595.35-13.54,348.89,10.33,175.14,24.32,103,84.99,18.18,147.03,0"
+    fill="#b09a69" // это cls-2 из оригинала
+    stroke="#333"
+  />
+      
       {/* Foredeck */}
       <g
         id="foredeck"
@@ -35,11 +43,11 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
   style={{ cursor: "pointer" }}
 >
   <rect
-    x="95"
-    y="230"
+    x="295"
+    y="130"
     width="100"
     height="60"
-    rx="15"
+    rx="215"
     ry="15"
     fill={zones.flybridge ? "#023e8a" : "#bdbdbd"}
     stroke="#333"
