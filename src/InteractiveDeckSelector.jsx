@@ -29,6 +29,16 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
           fill={zones.foredeck ? "#0077b6" : "#d9d9d9"}
           stroke="#333"
         />
+        <text
+    x="150"
+    y="120"
+    textAnchor="middle"
+    fontSize="16"
+    fontWeight="bold"
+    fill="#fff"
+  >
+    Foredeck
+  </text>
       </g>
 
       {/* Центральный элемент, всегда синий, без взаимодействия */} 
