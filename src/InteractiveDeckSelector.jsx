@@ -3,6 +3,7 @@ import "./InteractiveDeckSelector.css";
 
 export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
   return (
+  <div className="svg-wrapper">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 300 800"
@@ -84,5 +85,6 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
         />
       </g>
     </svg>
+  </div>
   );
 }
