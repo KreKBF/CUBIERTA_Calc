@@ -24,19 +24,21 @@
 .svg-wrapper {
   width: 100%;
   max-width: 600px;
-  max-height: 80vh; /* 👈 ограничение по высоте экрана */
+  height: 90vh; /* ⬅️ Устанавливаем высоту, соответствующую viewBox */
   margin: 0 auto;
   overflow: hidden;
-}
-.deck-schematic {
-  width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-}
-.svg-wrapper {
   outline: 2px dashed red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.deck-schematic {
+  width: auto;
+  height: 100%; /* ⬅️ SVG занимает всю доступную высоту */
+  display: block;
+}
+
 .input-row {
   display: flex;
   gap: 16px;
