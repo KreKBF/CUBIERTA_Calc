@@ -86,7 +86,7 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
           stroke="#333"
         />
         <text
-  x="150"
+  x="148"
   y="525"
   textAnchor="middle"
   fontSize="28"
@@ -113,6 +113,32 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
           fill={zones.sideDecks ? "#0077b6" : "#d9d9d9"}
           stroke="#333"
         />
+        <text
+  x="50"
+  y="450"
+  textAnchor="middle"
+  fontSize="28"
+  fontWeight="bold"
+  fill="#fff"
+  transform="rotate(-90, 50, 450)"
+>
+  Side
+  Decks
+</text>
+
+<text
+  x="250"
+  y="450"
+  textAnchor="middle"
+  fontSize="28"
+  fontWeight="bold"
+  fill="#fff"
+  transform="rotate(90, 250, 450)"
+>
+  Side
+  Decks
+</text>
+
       </g>
     
       {/* Swim Platform */}
