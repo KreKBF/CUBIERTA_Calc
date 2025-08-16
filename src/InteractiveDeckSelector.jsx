@@ -4,96 +4,85 @@ import "./InteractiveDeckSelector.css";
 export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
   return (
     <svg
-      viewBox="0 0 400 800"
       xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 300 800"
+      width="400"
+      height="auto"
       className="deck-schematic"
     >
       {/* Foredeck */}
-      <g onClick={() => onZoneToggle("foredeck")} style={{ cursor: "pointer" }}>
-        <polygon
-          points="200,5 295,140 105,140"
+      <g
+        id="foredeck"
+        onClick={() => onZoneToggle("foredeck")}
+        style={{ cursor: "pointer" }}
+      >
+        <path
+          d="M146.25,37.36c6.79-.33,11.75,2.16,17.07,5.31,61.84,36.78,97.07,121.05,98.01,150.76-.22,10.11-5.9,15.9-14.56,20.9-7.01,4.31-14.05,7.1-21.73,5.9-2.41-.46-4.18-1.36-6.04-2.73-5.49-4.02-13.67-11.34-29.03-16.5-14.33-4.96-28.98-6.31-43.64-6.37-14.67.05-29.31,1.4-43.64,6.37-15.36,5.16-23.54,12.48-29.03,16.5-1.86,1.37-3.63,2.26-6.04,2.73-7.68,1.19-14.72-1.59-21.73-5.9-8.66-5.01-14.35-10.8-14.56-20.9.94-29.71,36.17-113.98,98.01-150.76,5.33-3.15,10.31-5.65,17.1-5.32"
           fill={zones.foredeck ? "#0077b6" : "#d9d9d9"}
           stroke="#333"
         />
-        <text x="200" y="110" textAnchor="middle" fill="#fff" fontSize="14">
-          Foredeck
-        </text>
-      </g>
-
-      {/* Cockpit */}
-      <g onClick={() => onZoneToggle("cockpit")} style={{ cursor: "pointer" }}>
-        <rect
-          x="140"
-          y="140"
-          width="120"
-          height="240"
-          fill={zones.cockpit ? "#0077b6" : "#d9d9d9"}
-          stroke="#333"
-        />
-        <text x="200" y="330" textAnchor="middle" fill="#fff" fontSize="14">
-          Cockpit
-        </text>
       </g>
 
       {/* Flybridge */}
-      <g onClick={() => onZoneToggle("flybridge")} style={{ cursor: "pointer" }}>
-        <rect
-          x="160"
-          y="165"
-          width="80"
-          height="120"
+      <g
+        id="flybridge"
+        onClick={() => onZoneToggle("flybridge")}
+        style={{ cursor: "pointer" }}
+      >
+        <path
+          d="M146.32,8.23c58.91,17.77,116.8,101.11,129.94,171.84,21.52,178.85,3.51,415.8-19.64,529.45-6.46,16.14-24.04,23.36-40.33,24.38-21.5,2.46-48.22,2.93-69.97,3.01-23.34-.1-51.16-.64-72.69-3.42-13.62-1.33-27.5-7.07-34.77-19.51-3.49-5.93-4.76-11.58-5.81-17.37C15.73,591.06-5.62,349.78,17.01,179.68,30.27,109.06,87.78,26.02,146.59,8.23"
           fill={zones.flybridge ? "#023e8a" : "#bdbdbd"}
           stroke="#333"
         />
-        <text x="200" y="230" textAnchor="middle" fill="#fff" fontSize="10">
-          Flybridge
-        </text>
       </g>
 
-      {/* Side Decks */}
-      <g onClick={() => onZoneToggle("sideDecks")} style={{ cursor: "pointer" }}>
-        <polygon
-          points="105,140 140,140 140,380 105,380"
-          fill={zones.sideDecks ? "#0077b6" : "#d9d9d9"}
+      {/* Cockpit */}
+      <g
+        id="cockpit"
+        onClick={() => onZoneToggle("cockpit")}
+        style={{ cursor: "pointer" }}
+      >
+        <path
+          d="M146.53,605.35c15.2.1,29.61-.11,47.73-2.45,7.26-.65,12.92-3.31,15.19-10.65,7.14-23.09,14.92-124.43,12.92-146.09-.27-2.88-.58-6.05-2.82-8.14-2.51-2.43-6.98-2.3-10.39-1.41-20.18,6.42-37.9,10.04-62.28,10.28h.1c-24.38-.24-42.11-3.86-62.28-10.28-3.4-.9-7.88-1.02-10.39,1.41-2.23,2.08-2.55,5.25-2.82,8.14-2,21.66,5.78,123,12.92,146.09,2.27,7.35,7.93,10.01,15.19,10.65,18.12,2.33,32.53,2.55,47.73,2.45"
+          fill={zones.cockpit ? "#0077b6" : "#d9d9d9"}
           stroke="#333"
         />
-        <polygon
-          points="295,140 260,140 260,380 295,380"
-          fill={zones.sideDecks ? "#0077b6" : "#d9d9d9"}
-          stroke="#333"
-        />
-        <text
-          x="140"
-          y="260"
-          transform="rotate(-90 115,260)"
-          textAnchor="middle"
-          fill="#fff"
-          fontSize="12"
-        >
-          Side Deck
-        </text>
-        <text
-          x="280"
-          y="260"
-          transform="rotate(90 285,260)"
-          textAnchor="middle"
-          fill="#fff"
-          fontSize="12"
-        >
-          Side Deck
-        </text>
       </g>
-      
-    {/* Swim Platform */}
-      <g onClick={() => onZoneToggle("swimPlatform")} style={{ cursor: "pointer" }}>
-       <polygon
-         points="105,380 295,380 280,490 120,490"
-         fill={zones.swimPlatform ? "#0077b6" : "#d9d9d9"}
-         stroke="#333"
+
+      {/* Side Decks (левый и правый, + центральный путь) */}
+      <g
+        id="sideDecks"
+        onClick={() => onZoneToggle("sideDecks")}
+        style={{ cursor: "pointer" }}
+      >
+        <path
+          d="M35.23,597.24c.87,16.05,29.46,14.7,30.93-.02-12.74-105.31-22.67-214.35-11.23-356.15-.18-7.73-7.89-11.35-14.88-11.99-11.67-1.08-12.99,2.52-14.17,7.34-5.83,23.89-10.75,202.08,9.32,360.59l.04.24Z"
+          fill={zones.sideDecks ? "#0077b6" : "#d9d9d9"}
+          stroke="#333"
         />
-      <text x="200" y="420" textAnchor="middle" fill="#fff" fontSize="14">
-      Swim Platform
-      </text>
+        <path
+          d="M258.14,597.28c-.87,16.05-29.46,14.7-30.93-.02,12.74-105.31,22.67-214.35,11.23-356.15.18-7.73,7.89-11.35,14.88-11.99,11.67-1.08,12.99,2.52,14.17,7.34,5.83,23.89,10.75,202.08-9.32,360.59l-.04.24Z"
+          fill={zones.sideDecks ? "#0077b6" : "#d9d9d9"}
+          stroke="#333"
+        />
+        <path
+          d="M146.89,260.28c52.25.06,68.53,41.73,72.78,47,1.61,2,5.89,2.09,5.89-2.11,0-27.11-.19-36.6-.56-42.56-.14-2.32-1-6.61-3.22-11.11-1.97-3.99-19.14-40.82-74.89-39.44-55.75-1.37-72.92,35.46-74.89,39.44-2.23,4.5-3.08,8.79-3.22,11.11-.36,5.96-.56,15.44-.56,42.56,0,4.21,4.28,4.11,5.89,2.11,4.25-5.27,20.53-46.94,72.78-47Z"
+          fill={zones.sideDecks ? "#0077b6" : "#d9d9d9"}
+          stroke="#333"
+        />
+      </g>
+
+      {/* Swim Platform */}
+      <g
+        id="swimPlatform"
+        onClick={() => onZoneToggle("swimPlatform")}
+        style={{ cursor: "pointer" }}
+      >
+        <path
+          d="M146.44,721.1c36.74-.78,62.19-1.26,81.65-6.68,10.58-4.41,13.8-10.62,15.91-18.69,2.37-8.87,4.16-19.12,5.46-28.58.9-6.55,1.57-12.73,2.03-17.84.47-5.12.73-9.14.82-11.44.15-2.7-.6-5.78-2.49-8.49-2.85-4.54-8.82-5.75-14.09-5.46-34.29-.05-50.62-.29-89.29-.22h.4c-38.67-.07-55.01.17-89.29.22-5.27-.28-11.25.92-14.09,5.46-1.89,2.7-2.64,5.78-2.49,8.49.09,2.3.36,6.32.82,11.44.47,5.11,1.13,11.29,2.03,17.84,1.3,9.46,3.09,19.71,5.46,28.58,2.11,8.07,5.33,14.28,15.91,18.69,19.46,5.42,44.9,5.9,81.65,6.68"
+          fill={zones.swimPlatform ? "#0077b6" : "#d9d9d9"}
+          stroke="#333"
+        />
       </g>
     </svg>
   );
