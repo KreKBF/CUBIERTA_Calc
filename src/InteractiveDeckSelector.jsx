@@ -43,11 +43,11 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
   style={{ cursor: "pointer" }}
 >
   <rect
-    x="70"           // 95 - (100 → 200)/2 = 70 (сдвиг влево на 25)
-    y="430"          // 230 + 200 = 430
-    width="200"      // 100 * 2
-    height="120"     // 60 * 2
-    rx="30"          // 15 * 2
+    x="70"           // Центрированное положение после увеличения ширины
+    y="330"          // 230 + 100
+    width="200"      // Увеличено в 2 раза
+    height="120"     // Увеличено в 2 раза
+    rx="30"
     ry="30"
     fill={zones.flybridge ? "#023e8a" : "#bdbdbd"}
     stroke="#333"
