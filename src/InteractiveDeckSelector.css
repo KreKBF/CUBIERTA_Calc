@@ -30,8 +30,12 @@
 }
 .deck-schematic {
   width: 100%;
-  height: 100%;
+  height: auto;
   display: block;
+  margin: 0 auto;
+}
+.svg-wrapper {
+  outline: 2px dashed red;
 }
 .input-row {
   display: flex;
