@@ -5,87 +5,51 @@
   align-items: flex-start;
   padding: 20px;
   gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .calculator {
   flex: 1 1 300px;
-  min-width: 300px;
-  max-width: 50%;
-  font-size: 24px;
-}
-
-.calculator input {
-  width: 100%;
-  padding: 8px;
-  margin-top: 4px;
-  margin-bottom: 12px;
+  min-width: 280px;
+  max-width: 480px;
   font-size: 16px;
 }
+
 .svg-wrapper {
-  flex: 1 1 70%;
-  padding-top: 90px;
+  flex: 1 1 400px;
   display: flex;
-  align-items: flex-start;
   justify-content: center;
-  height: auto;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .deck-schematic {
-  height: 900px;
-  width: auto;
-  display: block;
-}
-
-.input-row {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  max-width: 420px;
-  font-size: 16px;
-  margin-bottom: 16px;
-}
-
-.input-row label {
-  flex: 1 1 180px;
-}
-
-.input-row input {
   width: 100%;
-  padding: 6px 10px;
-  font-size: 16px;
-  margin-top: 4px;
-}
-.calculator label {
-  display: block;
-  max-width: 420px;
-  width: 100%;
-  margin-bottom: 16px;
-  font-size: 16px;
+  height: auto;
+  max-width: 100%;
 }
 
-.calculator input {
-  width: 100%;
-  max-width: 420px;
-  padding: 8px;
-  font-size: 16px;
-  box-sizing: border-box;
-  display: block;
-}
-.zone-checkboxes {
-  max-width: 420px;
-  margin-bottom: 20px;
-  font-size: 16px;
-}
 .zone-checkboxes {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: 12px;
   font-size: 16px;
+  margin-bottom: 20px;
 }
 
 .zone-option {
   display: flex;
   align-items: center;
   gap: 10px;
+  font-size: 16px;
 }
+
+.zone-option input {
+  transform: scale(1.2);
+}
+
