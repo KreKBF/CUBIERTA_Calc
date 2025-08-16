@@ -29,6 +29,21 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
           fill="#66CCFF" stroke="#333"
        />
 
+<g
+  id="flybridge"
+  onClick={() => onZoneToggle("flybridge")}
+  style={{ cursor: "pointer" }}
+>
+  <ellipse
+    cx="146.5"
+    cy="400"
+    rx="40"
+    ry="50"
+    fill={zones.flybridge ? "#023e8a" : "#bdbdbd"}
+    stroke="#333"
+  />
+</g>
+      
       {/* Cockpit */}
       <g
         id="cockpit"
