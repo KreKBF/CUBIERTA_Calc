@@ -27,7 +27,6 @@
   height: 90vh; /* ⬅️ Устанавливаем высоту, соответствующую viewBox */
   margin: 0 auto;
   overflow: hidden;
-  outline: 2px dashed red;
   display: flex;
   align-items: center;
   justify-content: center;
