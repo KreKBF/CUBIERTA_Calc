@@ -21,13 +21,17 @@
   margin-bottom: 12px;
   font-size: 16px;
 }
-
-.deck-schematic {
-  max-width: 600px;
+.svg-wrapper {
   width: 100%;
-  height: auto;
-  display: block;
+  max-width: 600px;
+  max-height: 80vh; /* 👈 ограничение по высоте экрана */
   margin: 0 auto;
+  overflow: hidden;
+}
+.deck-schematic {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 .input-row {
   display: flex;
