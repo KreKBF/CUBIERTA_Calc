@@ -33,7 +33,7 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
     x="150"
     y="120"
     textAnchor="middle"
-    fontSize="16"
+    fontSize="24"
     fontWeight="bold"
     fill="#fff"
   >
@@ -62,6 +62,16 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
     fill={zones.flybridge ? "#0077b6" : "#d9d9d9"}
     stroke="#333"
   />
+  <text
+  x="150"
+  y="365"
+  textAnchor="middle"
+  fontSize="24"
+  fontWeight="bold"
+  fill="#fff"
+>
+  Flybridge
+</text>
 </g>
       
       {/* Cockpit */}
@@ -75,6 +85,16 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
           fill={zones.cockpit ? "#0077b6" : "#d9d9d9"}
           stroke="#333"
         />
+        <text
+  x="150"
+  y="610"
+  textAnchor="middle"
+  fontSize="24"
+  fontWeight="bold"
+  fill="#fff"
+>
+  Cockpit
+</text>
       </g>
 
       {/* Side Decks (левый и правый) */}
@@ -106,6 +126,16 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
           fill={zones.swimPlatform ? "#0077b6" : "#d9d9d9"}
           stroke="#333"
       />
+        <text
+  x="150"
+  y="765"
+  textAnchor="middle"
+  fontSize="24"
+  fontWeight="bold"
+  fill="#fff"
+>
+  Swim Platform
+</text>
       </g>
     </svg>
   </div>
