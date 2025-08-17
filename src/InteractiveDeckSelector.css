@@ -91,12 +91,12 @@
   font-size: 16px;
   display: flex;
   flex-direction: column;
-  gap: 38px;
+  gap: 5px;
 }
 
 .zone-option {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
   white-space: nowrap;
 }
