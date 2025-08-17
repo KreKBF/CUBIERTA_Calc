@@ -97,10 +97,10 @@
 .zone-option {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 1px;
   white-space: nowrap;
   line-height: 1; /* <-- это убирает лишнее вертикальное пространство */
 }
 .zone-option input[type="checkbox"] {
-  transform: translateY(4px); /* смещение вниз */
+  transform: translateY(5px); /* смещение вниз */
 }
