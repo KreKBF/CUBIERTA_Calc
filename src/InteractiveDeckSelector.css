@@ -102,5 +102,5 @@
   line-height: 1; /* <-- это убирает лишнее вертикальное пространство */
 }
 .zone-option input[type="checkbox"] {
-  transform: translateY(2px); /* смещение вниз */
+  transform: translateY(4px); /* смещение вниз */
 }
