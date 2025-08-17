@@ -12,12 +12,12 @@
 .calculator {
   flex: 1 1 300px;
   min-width: 300px;
-  max-width: 50%;
+  max-width: 100%;
   font-size: 24px;
 }
 .calculator input {
   width: 100%;
-  max-width: 420px;
+  max-width: 400px;
   padding: 8px;
   margin-top: 4px;
   margin-bottom: 12px;
@@ -29,7 +29,7 @@
 /* Правая часть: Лодка */
 .svg-wrapper {
   flex: 1 1 70%;
-  padding-top: 90px;
+  padding-top: 130px;
   display: flex;
   align-items: flex-start;
   justify-content: center;
