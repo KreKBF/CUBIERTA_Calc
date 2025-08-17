@@ -17,10 +17,13 @@
 }
 .calculator input {
   width: 100%;
+  max-width: 420px;
   padding: 8px;
   margin-top: 4px;
   margin-bottom: 12px;
-  font-size: 16px;
+  font-size: 16px;  
+  box-sizing: border-box;
+  display: block;
 }
 
 /* Правая часть: Лодка */
@@ -59,6 +62,7 @@
   font-size: 16px;
   margin-top: 4px;
 }
+
 .calculator label {
   display: block;
   max-width: 420px;
@@ -67,27 +71,14 @@
   font-size: 16px;
 }
 
-.calculator input {
-  width: 100%;
-  max-width: 420px;
-  padding: 8px;
-  font-size: 16px;
-  box-sizing: border-box;
-  display: block;
-}
-
 /* Чекбоксы */
 .zone-checkboxes {
   max-width: 420px;
   margin-bottom: 20px;
   font-size: 16px;
-}
-.zone-checkboxes {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-bottom: 20px;
-  font-size: 16px;
 }
 
 .zone-option {
