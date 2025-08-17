@@ -10,10 +10,11 @@
 
 /* Левая часть: Форма и чекбоксы */
 .calculator {
-  flex: 1 1 360px;
-  min-width: 360px;
+  flex: 1 1 300px;
+  min-width: 300px;
   max-width: 50%;
   font-size: 24px;
+  white-space: nowrap;
 }
 
 .main-title {
@@ -28,7 +29,7 @@
 
 .calculator input {
   width: 100%;
-  max-width: 350px;
+  max-width: 300px;
   padding: 8px;
   margin-top: 4px;
   margin-bottom: 12px;
@@ -59,7 +60,7 @@
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
-  max-width: 350px;
+  max-width: 300px;
   font-size: 16px;
   margin-bottom: 16px;
 }
@@ -77,7 +78,7 @@
 
 .calculator label {
   display: block;
-  max-width: 350px;
+  max-width: 300px;
   width: 100%;
   margin-bottom: 16px;
   font-size: 16px;
@@ -85,7 +86,7 @@
 
 /* Чекбоксы */
 .zone-checkboxes {
-  max-width: 350px;
+  max-width: 300px;
   margin-bottom: 20px;
   font-size: 16px;
   display: flex;
