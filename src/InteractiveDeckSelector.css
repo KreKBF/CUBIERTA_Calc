@@ -97,7 +97,7 @@
 .zone-option {
   display: inline-flex;
   align-items: center;
-  gap: 15px;
+  gap: 35px;
   line-height: 1.2; /* <-- это убирает лишнее вертикальное пространство */
   white-space: nowrap;
 }
