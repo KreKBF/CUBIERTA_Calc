@@ -10,8 +10,8 @@
 
 /* Левая часть: Форма и чекбоксы */
 .calculator {
-  flex: 1 1 300px;
-  min-width: 300px;
+  flex: 1 1 360px;
+  min-width: 360px;
   max-width: 50%;
   font-size: 24px;
 }
@@ -28,7 +28,7 @@
 
 .calculator input {
   width: 100%;
-  max-width: 420px;
+  max-width: 350px;
   padding: 8px;
   margin-top: 4px;
   margin-bottom: 12px;
