@@ -1,10 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cubierta Calculator</title>
+    <title>CUBIERTA Calculator</title>
+
+    <!-- Google Fonts (опционально, для приятного шрифта) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Базовые стили для устранения отступов и адаптивности -->
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        font-family: 'Roboto', sans-serif;
+        background-color: #fffaf5; /* мягкий фон, можно изменить */
+        color: #222;
+      }
+
+      #root {
+        min-height: 100vh;
+      }
+    </style>
   </head>
+
   <body>
     <div id="root"></div>
   </body>
