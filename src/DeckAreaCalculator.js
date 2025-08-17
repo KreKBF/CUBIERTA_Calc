@@ -35,9 +35,10 @@ export default function DeckAreaCalculator() {
   };
 
   return (
+  <>
+    <h2 className="main-title">Calculadora: Kit de inicio para cubierta</h2>
     <div className="container">
       <div className="calculator">
-        <h2>Calculadora: Kit de inicio para cubierta</h2>
         <label>
          Length (m):
          <input
@@ -80,6 +81,7 @@ export default function DeckAreaCalculator() {
         onZoneToggle={handleZoneToggle}
       />
     </div>
+  </>
   );
 }
 
