@@ -96,7 +96,10 @@
 
 .zone-option {
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
   gap: 5px;
   white-space: nowrap;
+}
+.zone-option input[type="checkbox"] {
+  transform: translateY(5px); /* смещение вниз */
 }
