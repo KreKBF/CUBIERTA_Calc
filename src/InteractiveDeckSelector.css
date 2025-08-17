@@ -45,14 +45,16 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  height: auto;
+  height: calc(100% - 2px);
 }
 
 /* SVG-изображение лодки */
 .deck-schematic {
-  height: auto;
-  width: 100%;
-  max-height: 900px;
+  max-width: 100%;
+  width: auto;
+  height: 100%;
+  max-height: 100%;
+  object-fit: contain;    /* сохраняет пропорции */
   display: block;
 }
 
