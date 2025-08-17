@@ -27,13 +27,14 @@
   max-width: calc(100% - 40px); /* небольшая защита от выхода за края */
 }
 
-.calculator input {
+.calculator input[type="text"],
+.calculator input[type="number"] {
   width: 100%;
   max-width: 300px;
   padding: 8px;
   margin-top: 4px;
   margin-bottom: 12px;
-  font-size: 16px;  
+  font-size: 16px;
   box-sizing: border-box;
   display: block;
 }
