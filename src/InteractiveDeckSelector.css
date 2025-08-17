@@ -109,7 +109,7 @@
   display: inline-block; /* важно: не block */
   flex: 0 0 auto;        /* не растягивать */
   margin: 0;
-  transform: translateY(2px); /* смещение вниз */
+  transform: translateY(1px); /* смещение вниз */
   margin-right: 15px;          /* fallback если gap не работает */
 }
 
