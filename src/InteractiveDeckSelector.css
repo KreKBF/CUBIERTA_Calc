@@ -15,14 +15,17 @@
   max-width: 50%;
   font-size: 24px;
 }
-.calculator h2 {
+
+.main-title {
   font-size: 28px;
   font-weight: bold;
+  margin: 0 0 24px 20px;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; /* по желанию, если хочешь многоточие в конце */
-  max-width: 100%;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 40px); /* небольшая защита от выхода за края */
 }
+
 .calculator input {
   width: 100%;
   max-width: 420px;
@@ -37,7 +40,7 @@
 /* Правая часть: Лодка */
 .svg-wrapper {
   flex: 1 1 70%;
-  padding-top: 150px;
+  padding-top: 50px;
   display: flex;
   align-items: flex-start;
   justify-content: center;
