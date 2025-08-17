@@ -8,13 +8,13 @@
   gap: 40px;
 }
 
+/* Левая часть: Форма и чекбоксы */
 .calculator {
   flex: 1 1 300px;
   min-width: 300px;
   max-width: 50%;
   font-size: 24px;
 }
-
 .calculator input {
   width: 100%;
   padding: 8px;
@@ -22,6 +22,8 @@
   margin-bottom: 12px;
   font-size: 16px;
 }
+
+/* Правая часть: Лодка */
 .svg-wrapper {
   flex: 1 1 70%;
   padding-top: 90px;
@@ -31,6 +33,7 @@
   height: auto;
 }
 
+/* SVG-изображение лодки */
 .deck-schematic {
   height: 900px;
   width: auto;
@@ -72,6 +75,8 @@
   box-sizing: border-box;
   display: block;
 }
+
+/* Чекбоксы */
 .zone-checkboxes {
   max-width: 420px;
   margin-bottom: 20px;
@@ -86,7 +91,8 @@
 }
 
 .zone-option {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 10px;
+  white-space: nowrap;
 }
