@@ -138,7 +138,6 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
   Side
   Decks
 </text>
-
       </g>
     
       {/* Swim Platform */}
