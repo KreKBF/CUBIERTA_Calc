@@ -12,6 +12,10 @@ export default function DeckAreaCalculator() {
   const containerRef = useRef(null);
   const calcRef = useRef(null);
 
+  // === Настройки расчёта (менять здесь) ===
+  const UNIT_PRICE_EUR_NO_IVA = 396;   // €/m², sin IVA — cámbialo aquí
+  const INITIAL_DEPOSIT_RATE = 0.10;  // 10% de anticipo
+
   const [length, setLength] = useState(10);
   const [beam, setBeam] = useState(3.5);
   const [zones, setZones] = useState({
@@ -22,19 +26,32 @@ export default function DeckAreaCalculator() {
     flybridge: false,
   });
 
-  // стабильный колбэк (использует только refs, они стабильны)
+  // устойчивый парсинг чисел с запятой
+  const toNumber = (v) => {
+    const n = parseFloat(String(v).replace(",", "."));
+    return Number.isFinite(n) ? n : 0;
+  };
+
+  // валюта/площадь для ES
+  const eur = new Intl.NumberFormat("es-ES", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 0,
+  });
+  const m2 = (v) =>
+    v.toLocaleString("es-ES", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+  // синхронизация высоты левой колонки в CSS-переменную --calc-h
   const syncHeights = useCallback(() => {
     if (!calcRef.current || !containerRef.current) return;
     const h = calcRef.current.offsetHeight;
     containerRef.current.style.setProperty("--calc-h", `${h}px`);
   }, []);
 
-  // пересчёт при изменении данных формы/зон
   useLayoutEffect(() => {
     syncHeights();
   }, [length, beam, zones, syncHeights]);
 
-  // пересчёт при ресайзе и изменении высоты левой колонки
   useEffect(() => {
     syncHeights();
     const onResize = () => syncHeights();
@@ -45,13 +62,13 @@ export default function DeckAreaCalculator() {
       ro = new ResizeObserver(syncHeights);
       ro.observe(calcRef.current);
     }
-
     return () => {
       window.removeEventListener("resize", onResize);
       if (ro) ro.disconnect();
     };
   }, [syncHeights]);
 
+  // коэффициенты зон
   const zoneFactors = {
     cockpit: 0.1,
     sideDecks: 0.15,
@@ -60,23 +77,16 @@ export default function DeckAreaCalculator() {
     flybridge: 0.1,
   };
 
-  const pricePerSqM = 18;
-
   const selectedFactor = Object.entries(zones)
     .filter(([_, active]) => active)
     .reduce((acc, [zone]) => acc + zoneFactors[zone], 0);
 
-  const area = Math.round(length * beam * selectedFactor * 10) / 10;
-  const price = Math.round(area * pricePerSqM);
+  const area = Math.round(length * beam * selectedFactor * 10) / 10; // м²
+  const totalNoIVA = Math.round(area * UNIT_PRICE_EUR_NO_IVA);       // €
+  const initialCost = Math.round(totalNoIVA * INITIAL_DEPOSIT_RATE); // €
 
   const handleZoneToggle = (zone) => {
     setZones((prev) => ({ ...prev, [zone]: !prev[zone] }));
-  };
-
-  // (опционально) аккуратно парсим запятую в десятичной части
-  const toNumber = (v) => {
-    const n = parseFloat(String(v).replace(",", "."));
-    return Number.isFinite(n) ? n : 0;
   };
 
   return (
@@ -91,9 +101,10 @@ export default function DeckAreaCalculator() {
               inputMode="decimal"
               step="0.1"
               value={length}
-              onChange={(e) => setLength(toNumber(e.target.value))}
+              onChange={(e) => setLength(Math.max(0, toNumber(e.target.value)))}
             />
           </label>
+
           <label>
             Width (m):
             <input
@@ -101,11 +112,25 @@ export default function DeckAreaCalculator() {
               inputMode="decimal"
               step="0.1"
               value={beam}
-              onChange={(e) => setBeam(toNumber(e.target.value))}
+              onChange={(e) => setBeam(Math.max(0, toNumber(e.target.value)))}
             />
           </label>
 
+          {/* Подсказка под полями длины/ширины */}
+          <p className="hint">
+            <em>
+              Si no conoces las medidas exactas, introduce las del pasaporte de la embarcación.
+            </em>
+          </p>
+
           <h4>¿Qué zonas deseas incluir?</h4>
+          {/* Подсказка под заголовком зон */}
+          <p className="hint">
+            <em>
+              Nota: puedes seleccionar una o varias zonas. El coste se calcula automáticamente.
+            </em>
+          </p>
+
           <div className="zone-checkboxes">
             {Object.entries(zones).map(([zone, active]) => (
               <label key={zone} className="zone-option">
@@ -119,11 +144,24 @@ export default function DeckAreaCalculator() {
             ))}
           </div>
 
+          {/* Итоги */}
           <p>
-            <strong>Superficie estimada:</strong> {area} m²
+            <strong>Superficie estimada:</strong> {m2(area)} m²
           </p>
           <p>
-            <strong>Precio estimado del kit:</strong> €{price}
+            <strong>Coste aproximado del conjunto (IVA no incluido):</strong>{" "}
+            {eur.format(totalNoIVA)}
+          </p>
+          <p>
+            <strong>Coste inicial del proyecto (10%):</strong> {eur.format(initialCost)}
+          </p>
+
+          {/* Подсказка под итогами */}
+          <p className="hint">
+            <em>
+              Incluye la compra de materiales para la plantilla y la toma de plantilla en tu marina.
+              El anticipo confirma tu compromiso con el proyecto y reserva un hueco en el calendario.
+            </em>
           </p>
         </div>
 
