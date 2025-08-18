@@ -1,8 +1,10 @@
 import InteractiveDeckSelector from "./InteractiveDeckSelector";
-import React, { useState } from "react";
-import "./InteractiveDeckSelector.css"; // подключим стили прямо тут
+import React, { useState, useRef, useLayoutEffect, useEffect } from "react";
+import "./InteractiveDeckSelector.css";
 
 export default function DeckAreaCalculator() {
+  const containerRef = useRef(null);
+  const calcRef = useRef(null);
   const [length, setLength] = useState(10);
   const [beam, setBeam] = useState(3.5);
   const [zones, setZones] = useState({
@@ -12,7 +14,31 @@ export default function DeckAreaCalculator() {
     swimPlatform: false,
     flybridge: false,
   });
+  const syncHeights = () => {
+    if (!calcRef.current || !containerRef.current) return;
+    const h = calcRef.current.offsetHeight;
+    containerRef.current.style.setProperty("--calc-h", `${h}px`);
+  };
+  
+  useLayoutEffect(() => {
+    syncHeights();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [length, beam, zones]);
 
+  useEffect(() => {
+    syncHeights();
+    window.addEventListener("resize", syncHeights);
+    let ro;
+    if (window.ResizeObserver && calcRef.current) {
+      ro = new ResizeObserver(syncHeights);
+      ro.observe(calcRef.current);
+    }
+    return () => {
+      window.removeEventListener("resize", syncHeights);
+      if (ro) ro.disconnect();
+    };
+  }, []);
+  
   const zoneFactors = {
     cockpit: 0.1,
     sideDecks: 0.15,
@@ -37,8 +63,8 @@ export default function DeckAreaCalculator() {
   return (
   <>
     <h2 className="main-title">Calculadora: Kit de inicio para cubierta</h2>
-    <div className="container">
-      <div className="calculator">
+    <div className="container" ref={containerRef}>
+      <div className="calculator" ref={calcRef}>
         <label>
          Length (m):
          <input
