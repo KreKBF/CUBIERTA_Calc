@@ -11,7 +11,7 @@
   --boat-w-fluid: 42vw;
   --boat-w-max: 680px;
 
-  --gap: 24px;
+  --gap: 4px;
 
   display: grid;
   grid-template-columns: minmax(320px, 560px) minmax(320px, var(--boat-w-max));
