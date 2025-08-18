@@ -7,8 +7,8 @@
   --calc-h: 72vh; /* fallback до первого измерения */
 
   display: grid;
-  grid-template-columns: minmax(320px, 560px) minmax(300px, 560px);
-  gap: 24px;
+  grid-template-columns: minmax(320px, 560px) minmax(420px, 680px);
+  gap: 5px;
   align-items: stretch;   /* обе колонки одной высоты строки */
   justify-content: center;
   padding: 20px;
@@ -104,7 +104,7 @@
   justify-content: center;
 
   /* целевая ширина лодки (безопасно для десктопов) */
-  width: clamp(300px, 34vw, 560px);
+  width: clamp(420px, 42vw, 680px);
   /* ключ: высота правой колонки = высоте левой */
   height: var(--calc-h);
 }
