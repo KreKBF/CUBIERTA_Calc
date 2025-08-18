@@ -3,9 +3,10 @@
 .container {
   /* левая колонка от 300 до 520px, правая — остальное */
   display: grid;
-  grid-template-columns: minmax(320px, 560px) minmax(320px, 1fr);
-  gap: 20px;            /* было больше — из-за этого «дыра» */
-  align-items: stretch; /* <— ключ: обе колонки одной высоты строки */
+  grid-template-columns: minmax(320px, 560px) minmax(300px, 520px);
+  gap: 24px;            /* было больше — из-за этого «дыра» */
+  align-items: start;
+  justify-content: center;
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
@@ -94,16 +95,19 @@
   padding-top: 2px;
   display: flex;
   align-items: flex-start;
-  justify-content: flex-start; /* <— вместо center/right: лодка ближе к форме */
-  height: 100%;                /* <— растянуть на высоту строки (как слева) */
-  overflow: hidden;            /* на всякий случай отрезать излишки */
+  justify-content: center; /* flex-start <— вместо center/right: лодка ближе к форме */
+  width: 100%;
+  max-width: 520px;        /* «разумная» ширина лодки на десктопах */
+  /* убираем обрезание содержимого — мешало при масштабах */
+  overflow: visible;
 }
 
 /* сам SVG управляем шириной и высотой правильно */
 .deck-schematic {
   display: block;
-  height: 100%;   /* <— главный момент: высота = высоте левой колонки */
-  width: auto;    /* сохраняем пропорции */
+  width: 100%;                 /* заполняем ширину обёртки */
+  height: auto;                /* сохраняем пропорции */
+  max-height: 80svh;           /* ключ: не выше 80% высоты экрана */
   max-width: 100%;
   object-fit: contain;
 }
@@ -121,7 +125,6 @@
   }
 
   .svg-wrapper {
-    height: auto;
     max-width: 100%;
     margin: 0 auto;
   }
