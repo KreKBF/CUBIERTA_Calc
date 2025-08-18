@@ -1,0 +1,38 @@
+:root{
+  /* Colors */
+  --c-bg: #FFF7EC;
+  --c-surface: #FFFFFF;
+  --c-primary: #0C2E45;
+  --c-secondary: #0077B6;
+  --c-accent: #C49A6C;
+  --c-text: #222222;
+  --c-text-muted: #667085;
+  --c-stroke: #E6E8EC;
+
+  /* Typography */
+  --f-heading: "Montserrat", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  --f-body: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+  /* Radii & shadow */
+  --r-lg: 16px;
+  --shadow: 0 10px 30px rgba(12,46,69,0.06);
+}
+
+/* Базовые стили */
+html, body { background: var(--c-bg); color: var(--c-text); }
+h1, h2, h3 { font-family: var(--f-heading); color: var(--c-primary); line-height: 1.15; }
+body, p, label, input, button { font-family: var(--f-body); }
+a, .btn-primary {
+  background: var(--c-secondary);
+  color: #fff;
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow);
+}
+a:hover, .btn-primary:hover { filter: brightness(0.95); }
+.muted { color: var(--c-text-muted); }
+.card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-stroke);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow);
+}
