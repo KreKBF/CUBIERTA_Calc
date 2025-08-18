@@ -1,16 +1,43 @@
-import React from "react";
+import React, { useRef, useLayoutEffect } from "react";
 import "./InteractiveDeckSelector.css";
 
 export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
+  const svgRef = useRef(null);
+    useLayoutEffect(() => {
+    const svg = svgRef.current;
+    if (!svg) return;
+
+    const content = svg.querySelector("#boatContent");
+    if (!content || !content.getBBox) return;
+
+    const fit = () => {
+      const box = content.getBBox();
+      const pad = 8;
+      const vb = `${box.x - pad} ${box.y - pad} ${box.width + pad * 2} ${box.height + pad * 2}`;
+      svg.setAttribute("viewBox", vb);
+    };
+
+    fit();
+    const onResize = () => fit();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+  
   return (
   <div className="svg-wrapper">
     <svg
+      ref={svgRef}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 300 990"
       preserveAspectRatio="xMidYMid meet"
       className="deck-schematic"
+      role="img"
+      aria-label="Схема палубы"
     >
-
+      
+{/* !!! ВАЖНО: обернули ВСЮ графику в одну группу с id="boatContent" */}
+  <g id="boatContent">
+          
   {/* Обводка лодки (фон, некликабельная) */}
   <path
     d="M146.75,0c62.14,18.15,123.21,103.28,137.07,175.53,22.71,182.69,3.7,424.73-20.72,540.82-6.81,16.48-25.36,23.87-42.54,24.9-22.68,2.51-50.87,3-73.81,3.08-24.62-.11-53.97-.65-76.68-3.5-14.37-1.36-29.01-7.22-36.68-19.93-3.69-6.06-5.03-11.83-6.13-17.75C8.99,595.35-13.54,348.89,10.33,175.14,24.32,103,84.99,18.18,147.03,0"
@@ -163,7 +190,8 @@ export default function InteractiveDeckSelector({ zones, onZoneToggle }) {
   Swim Platform
 </text>
       </g>
-    </svg>
-  </div>
-  );
+    </g>
+  </svg>
+</div> 
+);
 }
