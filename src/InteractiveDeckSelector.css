@@ -5,11 +5,12 @@
   display: grid;
   grid-template-columns: minmax(320px, 560px) minmax(300px, 520px);
   gap: 24px;            /* было больше — из-за этого «дыра» */
-  align-items: start;
+  align-items: stretch;
   justify-content: center;
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  --calc-h: 72vh;
 }
 
 /* заголовок масштабируемо */
@@ -97,7 +98,8 @@
   justify-content: center; /* flex-start <— вместо center/right: лодка ближе к форме */
   width: clamp(360px, 34vw, 560px);
   max-width: 560px;        /* «разумная» ширина лодки на десктопах */
-  padding-top: 2px;
+  padding-top: 1px;
+  max-height: var(--calc-h);
 }
 
 /* сам SVG управляем шириной и высотой правильно */
@@ -105,7 +107,7 @@
   display: block;
   width: 100%;                 /* заполняем ширину обёртки */
   height: auto;                /* сохраняем пропорции */
-  max-width: 100%;
+  max-height: var(--calc-h);
   object-fit: contain;
 }
 
