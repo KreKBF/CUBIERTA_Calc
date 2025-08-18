@@ -44,6 +44,16 @@
    
 }
 
+/* Уплотняем блок "¿Qué zonas deseas incluir?" */
+.calculator h4 {
+  margin: 6px 0 4px;   /* было большое дефолтное поле у h4 */
+}
+
+.calculator h4 + .hint {
+  margin: 2px 0 6px;   /* перекрываем общий .hint именно для подсказки под h4 */
+}
+
+
 /* =========================
    Левая колонка (форма)
    ========================= */
@@ -157,7 +167,7 @@
   .deck-schematic {
     width: 100%;
     height: auto;
-    max-height: 100svh;  /* читаемо и кликабельно на телефонах */
+    max-height: 70svh;  /* читаемо и кликабельно на телефонах */
   }
 
   .zone-option { white-space: normal; }
