@@ -1,15 +1,22 @@
 /* =========================
-   Layout
+   Layout & design tokens
    ========================= */
 
 .container {
-  /* JS выставляет фактическую высоту левой колонки сюда */
-  --calc-h: 72vh; /* fallback до первого измерения */
+  /* JS выставляет фактическую высоту левой колонки */
+  --calc-h: 72vh;               /* fallback до первого измерения */
+
+  /* размеры лодки (легко крутить под десктоп) */
+  --boat-w-min: 420px;
+  --boat-w-fluid: 42vw;
+  --boat-w-max: 680px;
+
+  --gap: 24px;
 
   display: grid;
-  grid-template-columns: minmax(320px, 560px) minmax(420px, 680px);
-  gap: 5px;
-  align-items: stretch;   /* обе колонки одной высоты строки */
+  grid-template-columns: minmax(320px, 560px) minmax(320px, var(--boat-w-max));
+  gap: var(--gap);
+  align-items: stretch;         /* обе колонки одной высоты строки */
   justify-content: center;
   padding: 20px;
   max-width: 1200px;
@@ -21,7 +28,7 @@
   font-size: clamp(20px, 3.2vw, 36px);
   font-weight: 700;
   margin: 0 0 24px 20px;
-  white-space: normal;     /* чтобы не вызывать горизонтальный скролл */
+  white-space: normal;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -103,19 +110,19 @@
   align-items: center;
   justify-content: center;
 
-  /* целевая ширина лодки (безопасно для десктопов) */
-  width: clamp(420px, 42vw, 680px);
-  /* ключ: высота правой колонки = высоте левой */
+  /* ширина лодки */
+  width: clamp(var(--boat-w-min), var(--boat-w-fluid), var(--boat-w-max));
+  /* высота строки = высоте левой колонки */
   height: var(--calc-h);
 }
 
 .deck-schematic {
   display: block;
-  /* вписываем схему и по ширине, и по высоте обёртки */
-  width: 100%;
-  height: 100%;
+  width: 100%;                        /* масштаб по ширине */
+  height: auto;                       /* сохраняем пропорции */
+  max-height: calc(var(--calc-h) - 4px);  /* не ниже низа формы */
   object-fit: contain;
-  /* preserveAspectRatio="xMidYMid meet" в SVG сохранит пропорции */
+  /* preserveAspectRatio="xMidYMid meet" в SVG сделает "contain" */
 }
 
 /* =========================
@@ -139,7 +146,7 @@
   .deck-schematic {
     width: 100%;
     height: auto;
-    max-height: 70svh;  /* читаемо и управляемо на телефонах */
+    max-height: 70svh;  /* читаемо и кликабельно на телефонах */
   }
 
   .zone-option { white-space: normal; }
