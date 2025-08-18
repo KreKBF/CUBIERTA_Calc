@@ -1,45 +1,58 @@
-/* ---------- Layout ---------- */
+/* =========================
+   Layout
+   ========================= */
 
 .container {
-  /* левая колонка от 320 до 560px, правая — остальное */
+  /* JS выставляет фактическую высоту левой колонки сюда */
+  --calc-h: 72vh; /* fallback до первого измерения */
+
   display: grid;
-  grid-template-columns: minmax(320px, 560px) minmax(300px, 560px);
-  gap: 24px;            /* было больше — из-за этого «дыра» */
-  align-items: stretch;
+  grid-template-columns: minmax(320px, 560px) minmax(320px, 620px);
+  gap: 24px;
+  align-items: stretch;   /* обе колонки одной высоты строки */
   justify-content: center;
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
-  --calc-h: 72vh;
 }
 
-/* заголовок масштабируемо */
+/* Заголовок */
 .main-title {
   font-size: clamp(20px, 3.2vw, 36px);
   font-weight: 700;
   margin: 0 0 24px 20px;
-  white-space: nowrap;
+  white-space: normal;     /* чтобы не вызывать горизонтальный скролл */
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* левая колонка */
-.calculator {
-  font-size: clamp(16px, 1.6vw, 20px);
+/* =========================
+   Левая колонка (форма)
+   ========================= */
+
+.calculator { font-size: clamp(16px, 1.6vw, 20px); }
+
+.calculator label {
+  display: block;
+  max-width: 300px;
+  width: 100%;
+  margin-bottom: 5px;
+  font-size: 16px;
 }
 
-/* инпуты */
 .calculator input[type="text"],
 .calculator input[type="number"] {
   width: 100%;
   max-width: 300px;
   padding: 8px;
-  margin-top: 4px;
-  margin-bottom: 12px;
+  margin: 4px 0 12px;
   font-size: 16px;
   box-sizing: border-box;
   display: block;
 }
+
+.calculator p { margin: 0 0 12px; }
+.calculator p:last-child { margin-bottom: 0; }
 
 .input-row {
   display: flex;
@@ -57,15 +70,7 @@
   margin-top: 4px;
 }
 
-.calculator label {
-  display: block;
-  max-width: 300px;
-  width: 100%;
-  margin-bottom: 5px;
-  font-size: 16px;
-}
-
-/* чекбоксы */
+/* Чекбоксы */
 .zone-checkboxes {
   max-width: 290px;
   margin-bottom: 0;
@@ -84,57 +89,58 @@
 .zone-option input[type="checkbox"] {
   width: 18px;
   height: 18px;
-  display: inline-block;
   flex: 0 0 auto;
   margin: 0;
   transform: translateY(2px);
 }
 
-/* ---------- SVG column ---------- */
+/* =========================
+   Правая колонка (SVG)
+   ========================= */
 
 .svg-wrapper {
   display: flex;
-  align-items: flex-start;
-  justify-content: center; /* flex-start <— вместо center/right: лодка ближе к форме */
-  width: clamp(360px, 34vw, 560px);
-  max-width: 560px;        /* «разумная» ширина лодки на десктопах */
-  padding-top: 1px;
-  max-height: var(--calc-h);
+  align-items: center;
+  justify-content: center;
+
+  /* целевая ширина лодки (безопасно для десктопов) */
+  width: clamp(380px, 38vw, 620px);
+  /* ключ: высота правой колонки = высоте левой */
+  height: var(--calc-h);
 }
 
-/* сам SVG управляем шириной и высотой правильно */
 .deck-schematic {
   display: block;
-  width: 100%;                 /* заполняем ширину обёртки */
-  height: auto;                /* сохраняем пропорции */
-  max-height: var(--calc-h);
+  /* вписываем схему и по ширине, и по высоте обёртки */
+  width: 100%;
+  height: 100%;
   object-fit: contain;
+  /* preserveAspectRatio="xMidYMid meet" в SVG сохранит пропорции */
 }
 
-/* ---------- Mobile ---------- */
+/* =========================
+   Mobile
+   ========================= */
+
 @media (max-width: 900px) {
   .container {
-    grid-template-columns: 1fr;   /* в одну колонку */
-    align-items: start;
+    grid-template-columns: 1fr;
     gap: 16px;
+    align-items: start;
   }
 
-  .main-title {
-    margin-left: 12px;
-  }
+  .main-title { margin-left: 12px; }
 
   .svg-wrapper {
-    max-width: 100%;
-    margin: 0 auto;
+    width: 100%;
+    height: auto;    /* высоту регулируем самим SVG */
   }
 
   .deck-schematic {
     width: 100%;
     height: auto;
-    max-height: 70svh;  /* чуть ниже на телефонах, чтобы форма была видна */
+    max-height: 60svh;  /* читаемо и управляемо на телефонах */
   }
 
-  .zone-option {
-    white-space: normal; /* подписи спокойно переносятся */
-  }
+  .zone-option { white-space: normal; }
 }
