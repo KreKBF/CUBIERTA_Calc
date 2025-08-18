@@ -3,7 +3,7 @@
 .container {
   /* левая колонка от 300 до 520px, правая — остальное */
   display: grid;
-  grid-template-columns: minmax(320px, 560px) minmax(300px, 520px);
+  grid-template-columns: minmax(320px, 560px) minmax(300px, 600px);
   gap: 24px;            /* было больше — из-за этого «дыра» */
   align-items: stretch;
   justify-content: center;
@@ -96,7 +96,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: center; /* flex-start <— вместо center/right: лодка ближе к форме */
-  width: clamp(360px, 34vw, 560px);
+  width: clamp(360px, 36vw, 600px);
   max-width: 560px;        /* «разумная» ширина лодки на десктопах */
   padding-top: 1px;
   max-height: var(--calc-h);
