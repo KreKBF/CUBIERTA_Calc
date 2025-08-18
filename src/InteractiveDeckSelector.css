@@ -7,7 +7,7 @@
   --calc-h: 72vh; /* fallback до первого измерения */
 
   display: grid;
-  grid-template-columns: minmax(320px, 560px) minmax(320px, 620px);
+  grid-template-columns: minmax(320px, 560px) minmax(300px, 560px);
   gap: 24px;
   align-items: stretch;   /* обе колонки одной высоты строки */
   justify-content: center;
@@ -104,7 +104,7 @@
   justify-content: center;
 
   /* целевая ширина лодки (безопасно для десктопов) */
-  width: clamp(380px, 38vw, 620px);
+  width: clamp(300px, 34vw, 560px);
   /* ключ: высота правой колонки = высоте левой */
   height: var(--calc-h);
 }
@@ -139,7 +139,7 @@
   .deck-schematic {
     width: 100%;
     height: auto;
-    max-height: 60svh;  /* читаемо и управляемо на телефонах */
+    max-height: 70svh;  /* читаемо и управляемо на телефонах */
   }
 
   .zone-option { white-space: normal; }
