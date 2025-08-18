@@ -25,6 +25,8 @@
 
 /* Заголовок */
 .main-title {
+  color: var(--c-primary);
+  font-family: var(--f-heading);
   font-size: clamp(20px, 3.2vw, 36px);
   font-weight: 700;
   margin: 0 0 24px 20px;
@@ -37,8 +39,9 @@
 .hint {
   font-size: 0.875em;   /* чуть меньше основного текста */
   line-height: 1.4;
-  color: #666;          /* мягче основного */
+  color: var(--c-text-muted);          /* мягче основного */
   margin: 4px 0 12px;
+   
 }
 
 /* =========================
