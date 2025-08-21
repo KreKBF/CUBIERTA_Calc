@@ -110,7 +110,13 @@ export default function StartForm() {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) throw new Error(await res.text());
+        let data = null;
+        try { data = await res.json(); } catch {}
+        if (!res.ok) {
+        const msg = data?.error || data?.message || `HTTP ${res.status}`;
+        alert("No se pudo enviar la solicitud: " + msg);
+        return;
+      }
       alert("¡Gracias! Tu solicitud ha sido enviada. Nuestro equipo te contactará en las próximas horas.");
 
       // очистка полей
