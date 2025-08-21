@@ -117,7 +117,7 @@ Nota: el anticipo es un pago para los materiales de la plantilla y la toma de pl
 
     if (transporterSMTP) {
       const from = process.env.MAIL_FROM || "CUBIERTA <no-reply@cubierta.org>";
-      await transporterSMTP.sendMail({ from, to: TO, bcc: BCC, subject, text, html });
+      await transporterSMTP.sendMail({ from, to: "sales@cubierta.org", bcc: "es.rusakov.ka@gmail.com", replyTo: email || undefined, subject, text, html,});
     } else if (resendClient) {
       const from = process.env.MAIL_FROM || "CUBIERTA <onboarding@resend.dev>";
       await resendClient.emails.send({ from, to: [TO], bcc: [BCC], subject, html, text });
