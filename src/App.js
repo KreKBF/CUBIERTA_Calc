@@ -1,12 +1,15 @@
-import React from "react";
-import DeckAreaCalculator from "./DeckAreaCalculator";
+import { Routes, Route, Navigate } from 'react-router-dom';
+import DeckAreaCalculator from './DeckAreaCalculator';
+import StartForm from './StartForm';
 
-function App() {
-  return (
-    <div>
-      <DeckAreaCalculator />
-    </div>
-  );
+
+export default function App() {
+return (
+<Routes>
+<Route path="/" element={<Navigate to="/calc" replace />} />
+<Route path="/calc" element={<DeckAreaCalculator />} />
+<Route path="/start" element={<StartForm />} />
+<Route path="*" element={<Navigate to="/calc" replace />} />
+</Routes>
+);
 }
-
-export default App;
