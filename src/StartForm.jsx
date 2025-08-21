@@ -160,8 +160,8 @@ export default function StartForm() {
         </div>
 
         <div style={{ display: "grid", gap: 12, gridTemplateColumns: "1fr 1fr" }}>
-          <input name="phone" placeholder="Teléfono (obligatorio)" value={form.phone} onChange={onChange} required />
-          <input type="email" name="email" placeholder="Correo electrónico (opcional)" value={form.email} onChange={onChange} />
+          <input type="tel" name="phone" placeholder="Teléfono (obligatorio)" value={form.phone} onChange={onChange} autoComplete="tel" required/>
+          <input type="email" name="email" placeholder="Correo electrónico (obligatorio)" value={form.email} onChange={onChange} autoComplete="email" required/>
         </div>
 
         {/* Marina + Marca/Modelo — 2 колонки */}
@@ -234,7 +234,7 @@ export default function StartForm() {
           <b>{moneyFmt(quote?.depositCents || 0, quote?.currency || "eur")}</b>
         </label>
 
-        <button type="submit" className="cta-btn">Enviar solicitud</button>
+        <button type="submit" className="cta-btn cta-wide">Enviar solicitud</button>
       </form>
     </div>
   );
