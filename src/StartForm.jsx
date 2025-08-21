@@ -1,4 +1,3 @@
-/*
 <div><small>Ориентировочная стоимость:</small> <b>{moneyFmt(quote.estimatedCostCents, quote.currency)}</b></div>
 <div><small>Предоплата (10%):</small> <b>{moneyFmt(quote.depositCents, quote.currency)}</b></div>
 <div style={{ fontSize: 12, color: '#666', marginTop: 6 }}>Предоплата — аванс за материалы для шаблона и снятие шаблона на борту.</div>
@@ -48,4 +47,3 @@
 </div>
 );
 }
-*/
