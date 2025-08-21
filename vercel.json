@@ -1,13 +1,16 @@
 {
-"rewrites": [
-{ "source": "/(.*)", "destination": "/index.html" }
-],
-"headers": [
-{
-"source": "/(.*)",
-"headers": [
-{ "key": "Content-Security-Policy", "value": "frame-ancestors https://www.cubierta.org;" }
-]
-}
-]
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors https://www.cubierta.org https://*.wix.com https://*.wixsite.com;"
+        }
+      ]
+    }
+  ]
 }
