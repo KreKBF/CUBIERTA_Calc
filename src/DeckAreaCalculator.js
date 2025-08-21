@@ -167,7 +167,7 @@ export default function DeckAreaCalculator() {
             {eur.format(totalNoIVA)}
           </p>
           <p>
-            <strong>Coste inicial del proyecto (10%):</strong> {eur.format(initialCost)}
+            <strong>Coste inicial del proyecto:</strong> {eur.format(initialCost)}
           </p>
 
           {/* Кнопка перехода к форме заявки */}
@@ -184,7 +184,7 @@ export default function DeckAreaCalculator() {
                 cursor: "pointer",
               }}
             >
-              Оставить заявку
+              Enviar solicitud
             </button>
           </div>
 
