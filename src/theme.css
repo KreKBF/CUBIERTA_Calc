@@ -40,8 +40,8 @@ a:hover, .btn-primary:hover { filter: brightness(0.95); }
 :root{
   /* Цвета бренда – по умолчанию чёрная кнопка. 
      Чтобы сделать синюю – замени на, например: #1d4ed8 и #1b46c7 */
-  --cta-bg: #111111;
-  --cta-bg-hover: #000000;
+  --cta-bg: #1d4ed8;
+  --cta-bg-hover: #1b46c7;
   --cta-text: #ffffff;
 }
 
