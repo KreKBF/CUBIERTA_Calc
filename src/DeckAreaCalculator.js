@@ -6,15 +6,17 @@ import React, {
   useEffect,
   useCallback,
 } from "react";
+import { useNavigate } from "react-router-dom"; /* ⬅ добавили роутер для перехода на /start */
 import "./InteractiveDeckSelector.css";
 
 export default function DeckAreaCalculator() {
   const containerRef = useRef(null);
   const calcRef = useRef(null);
+  const navigate = useNavigate(); /* ⬅ хук навигации */
 
-  // === Настройки расчёта (менять здесь) ===
-  const UNIT_PRICE_EUR_NO_IVA = 396;   // €/m², sin IVA — cámbialo aquí
-  const INITIAL_DEPOSIT_RATE = 0.10;  // 10% de anticipo
+  /* === Настройки расчёта (менять здесь) === */
+  const UNIT_PRICE_EUR_NO_IVA = 396;   /* €/m², sin IVA */
+  const INITIAL_DEPOSIT_RATE = 0.10;   /* 10% anticipo */
 
   const [length, setLength] = useState(10);
   const [beam, setBeam] = useState(3.5);
@@ -26,13 +28,13 @@ export default function DeckAreaCalculator() {
     flybridge: false,
   });
 
-  // устойчивый парсинг чисел с запятой
+  /* устойчивый парсинг чисел с запятой */
   const toNumber = (v) => {
     const n = parseFloat(String(v).replace(",", "."));
     return Number.isFinite(n) ? n : 0;
   };
 
-  // валюта/площадь для ES
+  /* валюта/площадь для ES */
   const eur = new Intl.NumberFormat("es-ES", {
     style: "currency",
     currency: "EUR",
@@ -41,7 +43,7 @@ export default function DeckAreaCalculator() {
   const m2 = (v) =>
     v.toLocaleString("es-ES", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
-  // синхронизация высоты левой колонки в CSS-переменную --calc-h
+  /* синхронизация высоты левой колонки в CSS-переменную --calc-h */
   const syncHeights = useCallback(() => {
     if (!calcRef.current || !containerRef.current) return;
     const h = calcRef.current.offsetHeight;
@@ -68,7 +70,7 @@ export default function DeckAreaCalculator() {
     };
   }, [syncHeights]);
 
-  // коэффициенты зон
+  /* коэффициенты зон */
   const zoneFactors = {
     cockpit: 0.1,
     sideDecks: 0.15,
@@ -81,12 +83,24 @@ export default function DeckAreaCalculator() {
     .filter(([_, active]) => active)
     .reduce((acc, [zone]) => acc + zoneFactors[zone], 0);
 
-  const area = Math.round(length * beam * selectedFactor * 10) / 10; // м²
-  const totalNoIVA = Math.round(area * UNIT_PRICE_EUR_NO_IVA);       // €
-  const initialCost = Math.round(totalNoIVA * INITIAL_DEPOSIT_RATE); // €
+  const area = Math.round(length * beam * selectedFactor * 10) / 10; /* м² */
+  const totalNoIVA = Math.round(area * UNIT_PRICE_EUR_NO_IVA);       /* € (целое число) */
+  const initialCost = Math.round(totalNoIVA * INITIAL_DEPOSIT_RATE); /* € (целое число) */
 
   const handleZoneToggle = (zone) => {
     setZones((prev) => ({ ...prev, [zone]: !prev[zone] }));
+  };
+
+  /* ⬇⬇⬇ Кнопка «Оставить заявку»: передаём расчёт в /start?quote=... (base64(JSON)) ⬇⬇⬇ */
+  const goToStartForm = () => {
+    const payload = {
+      areaM2: area,
+      estimatedCostCents: totalNoIVA * 100,
+      depositCents: initialCost * 100,
+      currency: "eur",
+    };
+    const quote = btoa(JSON.stringify(payload));
+    navigate(`/start?quote=${encodeURIComponent(quote)}`);
   };
 
   return (
@@ -155,6 +169,24 @@ export default function DeckAreaCalculator() {
           <p>
             <strong>Coste inicial del proyecto (10%):</strong> {eur.format(initialCost)}
           </p>
+
+          {/* Кнопка перехода к форме заявки */}
+          <div style={{ marginTop: 16 }}>
+            <button
+              type="button"
+              onClick={goToStartForm}
+              style={{
+                padding: "12px 18px",
+                borderRadius: 14,
+                background: "#000",
+                color: "#fff",
+                fontWeight: 600,
+                cursor: "pointer",
+              }}
+            >
+              Оставить заявку
+            </button>
+          </div>
 
           {/* Подсказка под итогами */}
           <p className="hint">
