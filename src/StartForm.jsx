@@ -166,7 +166,9 @@ export default function StartForm() {
         </div>
 
         <div style={{ display: "grid", gap: 12, gridTemplateColumns: "1fr 1fr" }}>
-          <input type="tel" name="phone" placeholder="Teléfono (obligatorio)" value={form.phone} onChange={onChange} autoComplete="tel" required/>
+         <input type="tel" name="phone" placeholder="Teléfono (obligatorio)" value={form.phone} onChange={onChange} autoComplete="tel" pattern="^[+()\s-]*\d(?:[()\s-]*\d){6,}$"  // ≥7 цифр, допускаем + () - пробел
+  required
+/>
           <input type="email" name="email" placeholder="Correo electrónico (obligatorio)" value={form.email} onChange={onChange} autoComplete="email" required/>
         </div>
 
