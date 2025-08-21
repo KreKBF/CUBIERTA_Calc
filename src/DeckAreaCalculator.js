@@ -175,14 +175,7 @@ export default function DeckAreaCalculator() {
             <button
               type="button"
               onClick={goToStartForm}
-              style={{
-                padding: "12px 18px",
-                borderRadius: 14,
-                background: "#000",
-                color: "#fff",
-                fontWeight: 600,
-                cursor: "pointer",
-              }}
+              className="cta-btn"
             >
               Enviar solicitud
             </button>
