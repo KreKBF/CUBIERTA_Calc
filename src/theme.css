@@ -36,3 +36,37 @@ a:hover, .btn-primary:hover { filter: brightness(0.95); }
   border-radius: var(--r-lg);
   box-shadow: var(--shadow);
 }
+/* === CTA кнопка (Enviar solicitud) === */
+:root{
+  /* Цвета бренда – по умолчанию чёрная кнопка. 
+     Чтобы сделать синюю – замени на, например: #1d4ed8 и #1b46c7 */
+  --cta-bg: #111111;
+  --cta-bg-hover: #000000;
+  --cta-text: #ffffff;
+}
+
+.cta-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;             /* делаем длинной */
+  max-width: 560px;        /* на десктопе – широкая, но не бесконечная */
+  padding: 14px 22px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--cta-bg);
+  color: var(--cta-text);
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0,0,0,.15);
+  transition: background-color .2s ease, box-shadow .2s ease, transform .06s ease, opacity .2s ease;
+}
+.cta-btn:hover{ background: var(--cta-bg-hover); opacity: .96; }
+.cta-btn:active{ transform: translateY(1px); }
+.cta-btn:focus{ outline: 3px solid rgba(0,0,0,.25); outline-offset: 2px; }
+
+/* чтобы на мобиле занимала всю ширину колонки */
+@media (max-width: 640px){
+  .cta-btn{ max-width: 100%; }
+}
