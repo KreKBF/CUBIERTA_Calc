@@ -71,14 +71,3 @@ a:hover, .btn-primary:hover { filter: brightness(0.95); }
 @media (max-width: 640px){
   .cta-btn{ max-width: 100%; }
 }
-
-/* Глобальный фон для всего приложения */
-html, body { height: 100%;}
-/* резервный цвет + картинка */
-body {    background-color: var(--c-bg);
-  background-image: url("/images/Background.png");
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-size: cover;
-  background-attachment: fixed;
-}
