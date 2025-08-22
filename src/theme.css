@@ -76,8 +76,7 @@ a:hover, .btn-primary:hover { filter: brightness(0.95); }
 html, body {
   height: 100%;
 }
-
+/* резервный цвет + картинка */
 body {
-  /* резервный цвет + картинка */
-  background: #fffaf5 url("/images/Background.png") center top / cover no-repeat fixed;
+  background: #fffaf5 url("public/images/Background.png") center top / cover no-repeat fixed;
 }
