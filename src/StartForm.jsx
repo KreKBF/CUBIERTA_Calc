@@ -110,42 +110,30 @@ export default function StartForm() {
         body: JSON.stringify(payload),
       });
 
-        let data = null;
-        try { data = await res.json(); } catch {}
-        if (!res.ok) {
+      let data = null;
+      try { data = await res.json(); } catch {}
+
+      if (!res.ok) {
         const msg = data?.error || `HTTP ${res.status}`;
         alert("No se pudo enviar la solicitud: " + msg);
         return;
       }
-      const rawQuote = new URLSearchParams(window.location.search).get("quote")
-      || btoa(JSON.stringify({
-          areaM2: quote?.areaM2,
-          estimatedCostCents: quote?.estimatedCostCents,
-          depositCents: quote?.depositCents,
-          currency: quote?.currency || "eur",
-        }));
 
-    // переход на страницу «Gracias»
-    const lead = data?.leadId ? `lead=${encodeURIComponent(data.leadId)}&` : "";
+      // берём исходный quote из URL, чтобы передать на /gracias
+      const rawQuote =
+        new URLSearchParams(window.location.search).get("quote") ||
+        btoa(
+          JSON.stringify({
+            areaM2: quote?.areaM2,
+            estimatedCostCents: quote?.estimatedCostCents,
+            depositCents: quote?.depositCents,
+            currency: quote?.currency || "eur",
+          })
+        );
+
+      // переход на страницу «Gracias»
+      const lead = data?.leadId ? `lead=${encodeURIComponent(data.leadId)}&` : "";
       window.top?.location.assign(`/gracias?${lead}quote=${encodeURIComponent(rawQuote)}`);
-    } catch (err) {
-      console.error(err);
-      alert("Error al enviar la solicitud. Inténtalo de nuevo.");
-    }
-  };
-
-      // очистка полей
-      setMarinaInput("");
-      setForm({
-        name: "",
-        surname: "",
-        phone: "",
-        email: "",
-        marina: "",
-        boatMakeModel: "",
-        contactMethod: "call",
-        confirmDeposit: false,
-      });
     } catch (err) {
       console.error(err);
       alert("Error al enviar la solicitud. Inténtalo de nuevo.");
@@ -181,10 +169,26 @@ export default function StartForm() {
         </div>
 
         <div style={{ display: "grid", gap: 12, gridTemplateColumns: "1fr 1fr" }}>
-         <input type="tel" name="phone" placeholder="Teléfono (obligatorio)" value={form.phone} onChange={onChange} autoComplete="tel" pattern="^[+()\s-]*\d(?:[()\s-]*\d){6,}$"  // ≥7 цифр, допускаем + () - пробел
-  required
-/>
-          <input type="email" name="email" placeholder="Correo electrónico (obligatorio)" value={form.email} onChange={onChange} autoComplete="email" required/>
+          {/* ≥7 цифр, допускаем + () - пробел */}
+          <input
+            type="tel"
+            name="phone"
+            placeholder="Teléfono (obligatorio)"
+            value={form.phone}
+            onChange={onChange}
+            autoComplete="tel"
+            pattern="^[+()\s-]*\d(?:[()\s-]*\d){6,}$"
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Correo electrónico (obligatorio)"
+            value={form.email}
+            onChange={onChange}
+            autoComplete="email"
+            required
+          />
         </div>
 
         {/* Marina + Marca/Modelo — 2 колонки */}
