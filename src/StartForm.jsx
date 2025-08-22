@@ -172,12 +172,12 @@ export default function StartForm() {
       )}
 
       <form onSubmit={submit} style={{ display: "grid", gap: 12, marginTop: 16 }}>
-        <div style={{ display: "grid", gap: 12, gridTemplateColumns: "1fr 1fr" }}>
+        <div className="grid-2">
           <input name="name" placeholder="Nombre" value={form.name} onChange={onChange} required />
           <input name="surname" placeholder="Apellidos" value={form.surname} onChange={onChange} required />
         </div>
 
-        <div style={{ display: "grid", gap: 12, gridTemplateColumns: "1fr 1fr" }}>
+        <div className="grid-2">
           {/* ≥7 цифр, допускаем + () - пробел */}
           <input
             type="tel"
@@ -201,7 +201,7 @@ export default function StartForm() {
         </div>
 
         {/* Marina + Marca/Modelo — 2 колонки */}
-        <div style={{ display: "grid", gap: 12, gridTemplateColumns: "1fr 1fr" }}>
+        <div className="grid-2">
           <div>
             <label style={{ display: "block", fontSize: 12, marginBottom: 4, color: "#555" }}>
               Marina de base
