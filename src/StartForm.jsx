@@ -124,8 +124,12 @@ export default function StartForm() {
           currency: quote?.currency || "eur",
         }));
 
-      const lead = data?.leadId ? `lead=${encodeURIComponent(data.leadId)}&` : "";
-      const url = `/gracias?${lead}quote=${encodeURIComponent(rawQuote)}`;
+      const leadPart =
+       data?.refCode
+         ? `ref=${encodeURIComponent(data.refCode)}&`
+         : (data?.leadId ? `lead=${encodeURIComponent(data.leadId)}&` : "");
+       const url = `/gracias?${leadPart}quote=${encodeURIComponent(rawQuote)}`;
+
 
       // аккуратный редирект с fallback для sandbox-iframe
       try {
