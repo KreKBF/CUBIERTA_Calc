@@ -159,7 +159,7 @@ module.exports = async (req, res) => {
         <ul>
           <li><b>Superficie estimada:</b> ${typeof areaM2 === "number" ? areaM2.toFixed(2) : "-"} m²</li>
           <li><b>Coste aproximado del conjunto:</b> ${estimateFmt}</li>
-          <li><b>Anticipo (10%):</b> ${depositFmt}</li>
+          <li><b>Pago de arranque:</b> ${depositFmt}</li>
         </ul>
         <h3 style="margin:16px 0 6px">Datos del cliente</h3>
         <ul>
@@ -183,7 +183,7 @@ Referencia: ${refCode}
 [Datos del cálculo]
 - Superficie estimada: ${typeof areaM2 === "number" ? areaM2.toFixed(2) : "-"} m²
 - Coste aproximado del conjunto: ${estimateFmt}
-- Anticipo (10%): ${depositFmt}
+- Pago de arranque: ${depositFmt}
 
 [Datos del cliente]
 - Nombre: ${name} ${surname}
@@ -205,7 +205,7 @@ Nota: el anticipo es un pago para los materiales de la plantilla y la toma de pl
         <ul>
           <li><b>Superficie estimada:</b> ${typeof areaM2 === "number" ? areaM2.toFixed(2) : "-"} m²</li>
           <li><b>Coste aproximado del conjunto:</b> ${estimateFmt}</li>
-          <li><b>Anticipo (10%):</b> ${depositFmt}</li>
+          <li><b>Pago de arranque:</b> ${depositFmt}</li>
         </ul>
         <p>Un gestor se pondrá en contacto contigo en las próximas horas para concretar los detalles y los siguientes pasos.</p>
         <p style="font-size:12px; color:#555">
@@ -220,7 +220,7 @@ Referencia: ${refCode}
 Resumen:
 - Superficie estimada: ${typeof areaM2 === "number" ? areaM2.toFixed(2) : "-"} m²
 - Coste aproximado del conjunto: ${estimateFmt}
-- Anticipo (10%): ${depositFmt}
+- Pago de arranque: ${depositFmt}
 
 Un gestor se pondrá en contacto contigo en las próximas horas.`;
 
