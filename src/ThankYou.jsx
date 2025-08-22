@@ -46,14 +46,14 @@ export default function ThankYou() {
       <h1>¡Gracias! Hemos recibido tu solicitud</h1>
 
       {/* hero (опционально, если добавляли файл /images/thankyou-hero.webp) */}
-      {/* <div className="ty-hero">
+      <div className="ty-hero">
         <img
           src="/images/thankyou-hero.webp"
           srcSet="/images/thankyou-hero@2x.webp 2x"
           alt="Velero navegando en mar abierto"
           loading="lazy"
         />
-      </div> */}
+      </div>
 
       <div
         style={{
