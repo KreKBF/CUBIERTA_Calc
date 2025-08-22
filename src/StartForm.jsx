@@ -157,7 +157,7 @@ export default function StartForm() {
         <div style={{ padding: 12, background: "#f0f4ff", borderRadius: 12, marginTop: 8 }}>
           <div><small>Superficie estimada:</small> <b>{Number(quote.areaM2).toFixed(2)} m²</b></div>
           <div><small>Coste aproximado del conjunto:</small> <b>{moneyFmt(quote.estimatedCostCents, quote.currency)}</b></div>
-          <div><small>Anticipo (10%):</small> <b>{moneyFmt(quote.depositCents, quote.currency)}</b></div>
+          <div><small>Pago de arranque:</small> <b>{moneyFmt(quote.depositCents, quote.currency)}</b></div>
           <div style={{ fontSize: 12, color: "#666", marginTop: 6 }}>
             El anticipo es un pago para los materiales de la plantilla y la toma de plantilla a bordo. Tras abonarlo, reservamos un hueco en el calendario.
           </div>
