@@ -71,3 +71,42 @@ a:hover, .btn-primary:hover { filter: brightness(0.95); }
 @media (max-width: 640px){
   .cta-btn{ max-width: 100%; }
 }
+
+/* === Global blurred background (all pages) === */
+html, body { height: 100%; }
+body { position: relative; background-color: var(--c-bg); } /* fallback-цвет */
+
+body::before{
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("/images/Background.webp") center top / cover no-repeat;
+  filter: blur(6px) saturate(0.95) brightness(1.03);
+  transform: scale(1.05);   /* чтобы края после blur не были видны */
+  opacity: 0.35;            /* сделай 0.25–0.45 по вкусу */
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* лёгкая вуаль для читаемости поверх картинки (опционально) */
+body::after{
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,247,236,.60) 0%,
+    rgba(255,247,236,.35) 30%,
+    rgba(255,247,236,.60) 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* контент поверх фон-слоёв */
+#root{ position: relative; z-index: 1; }
+
+/* уважим пользователей с reduced motion */
+@media (prefers-reduced-motion: reduce){
+  body::before, body::after{ position: absolute; }
+}
