@@ -1,4 +1,14 @@
-// api/leads.js
+// CORS для работы внутри iframe (Wix) + preflight
+function setCORS(req, res) {
+  const origin = req.headers.origin || "*";
+  // У нас нет cookies/credentials, поэтому можно *. Если хотите ужесточить —
+  // подставьте проверку origin и возвращайте только разрешённые домены.
+  res.setHeader("Access-Control-Allow-Origin", origin === "null" ? "*" : origin);
+  res.setHeader("Vary", "Origin");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+}
+
 const crypto = require("crypto");
 
 // ТРАНСПОРТ 1: SMTP (если заданы SMTP_* переменные)
@@ -9,11 +19,13 @@ try {
     transporterSMTP = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: Number(process.env.SMTP_PORT || 587),
-      secure: process.env.SMTP_SECURE === "true", // true для 465
+      secure: process.env.SMTP_SECURE === "true", // true для 465 (implicit TLS)
       auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
     });
   }
-} catch (_) { /* nodemailer не установлен — ок */ }
+} catch (_) {
+  /* nodemailer не установлен — ок */
+}
 
 // ТРАНСПОРТ 2: Resend (fallback, если есть ключ)
 let resendClient = null;
@@ -22,13 +34,17 @@ try {
   if (process.env.RESEND_API_KEY) {
     resendClient = new Resend(process.env.RESEND_API_KEY);
   }
-} catch (_) { /* resend не установлен — ок */ }
+} catch (_) {
+  /* resend не установлен — ок */
+}
 
 // Утилиты
 function moneyFmt(cents = 0, currency = "eur", locale = "es-ES") {
   try {
-    return new Intl.NumberFormat(locale, { style: "currency", currency: currency.toUpperCase() })
-      .format((Number(cents) || 0) / 100);
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency: currency.toUpperCase(),
+    }).format((Number(cents) || 0) / 100);
   } catch {
     return `${(Number(cents) || 0) / 100} ${currency || "eur"}`;
   }
@@ -38,29 +54,58 @@ async function readJson(req) {
   const chunks = [];
   for await (const chunk of req) chunks.push(chunk);
   const raw = Buffer.concat(chunks).toString("utf8");
-  try { return JSON.parse(raw || "{}"); } catch { return {}; }
+  try {
+    return JSON.parse(raw || "{}");
+  } catch {
+    return {};
+  }
 }
 
 module.exports = async (req, res) => {
+  // CORS + preflight
+  setCORS(req, res);
+  if (req.method === "OPTIONS") {
+    return res.status(204).end();
+  }
   if (req.method !== "POST") {
-    res.setHeader("Allow", "POST");
+    res.setHeader("Allow", "POST, OPTIONS");
     return res.status(405).json({ error: "Method Not Allowed" });
   }
 
   try {
-    const body = typeof req.body === "object" && req.body !== null ? req.body : await readJson(req);
+    const body =
+      typeof req.body === "object" && req.body !== null
+        ? req.body
+        : await readJson(req);
+
     const {
-      name, surname, phone, email, marina, boatMakeModel,
-      contactMethod, confirmDeposit,
-      areaM2, estimatedCostCents, depositCents, currency = "eur",
+      name,
+      surname,
+      phone,
+      email,
+      marina,
+      boatMakeModel,
+      contactMethod,
+      confirmDeposit,
+      areaM2,
+      estimatedCostCents,
+      depositCents,
+      currency = "eur",
     } = body;
 
     // Базовая валидация
     if (!name || !surname || !phone) {
-      return res.status(400).json({ error: "Faltan campos obligatorios (nombre, apellidos, teléfono)." });
+      return res
+        .status(400)
+        .json({
+          error:
+            "Faltan campos obligatorios (nombre, apellidos, teléfono).",
+        });
     }
     if (!confirmDeposit) {
-      return res.status(400).json({ error: "Es necesario confirmar el anticipo del 10%." });
+      return res
+        .status(400)
+        .json({ error: "Es necesario confirmar el anticipo del 10%." });
     }
 
     const leadId = crypto.randomUUID();
@@ -74,7 +119,9 @@ module.exports = async (req, res) => {
         <p><b>ID:</b> ${leadId}</p>
         <h3 style="margin:16px 0 6px">Datos del cálculo</h3>
         <ul>
-          <li><b>Superficie estimada:</b> ${typeof areaM2 === "number" ? areaM2.toFixed(2) : "-"} m²</li>
+          <li><b>Superficie estimada:</b> ${
+            typeof areaM2 === "number" ? areaM2.toFixed(2) : "-"
+          } m²</li>
           <li><b>Coste aproximado del conjunto:</b> ${estimateFmt}</li>
           <li><b>Anticipo (10%):</b> ${depositFmt}</li>
         </ul>
@@ -92,8 +139,7 @@ module.exports = async (req, res) => {
         </p>
       </div>
     `;
-    const text =
-`Nueva solicitud para iniciar el proyecto
+    const text = `Nueva solicitud para iniciar el proyecto
 ID: ${leadId}
 
 [Datos del cálculo]
@@ -116,14 +162,32 @@ Nota: el anticipo es un pago para los materiales de la plantilla y la toma de pl
     const BCC = "es.rusakov.ka@gmail.com";
 
     if (transporterSMTP) {
-      const from = process.env.MAIL_FROM || "CUBIERTA <no-reply@cubierta.org>";
-      await transporterSMTP.sendMail({ from, to: "sales@cubierta.org", bcc: "es.rusakov.ka@gmail.com", replyTo: email || undefined, subject, text, html,});
+      const from =
+        process.env.MAIL_FROM || "CUBIERTA <no-reply@cubierta.org>";
+      await transporterSMTP.sendMail({
+        from,
+        to: TO,
+        bcc: BCC,
+        replyTo: email || undefined,
+        subject,
+        text,
+        html,
+      });
     } else if (resendClient) {
-      const from = process.env.MAIL_FROM || "CUBIERTA <onboarding@resend.dev>";
-      await resendClient.emails.send({ from, to: [TO], bcc: [BCC], subject, html, text });
+      const from =
+        process.env.MAIL_FROM || "CUBIERTA <onboarding@resend.dev>";
+      await resendClient.emails.send({
+        from,
+        to: [TO],
+        bcc: [BCC],
+        subject,
+        html,
+        text,
+      });
     } else {
       return res.status(500).json({
-        error: "No hay transporte de correo configurado. Configure SMTP_* o RESEND_API_KEY.",
+        error:
+          "No hay transporte de correo configurado. Configure SMTP_* o RESEND_API_KEY.",
       });
     }
 
