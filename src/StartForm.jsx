@@ -113,11 +113,26 @@ export default function StartForm() {
         let data = null;
         try { data = await res.json(); } catch {}
         if (!res.ok) {
-        const msg = data?.error || data?.message || `HTTP ${res.status}`;
+        const msg = data?.error || `HTTP ${res.status}`;
         alert("No se pudo enviar la solicitud: " + msg);
         return;
       }
-      alert("¡Gracias! Tu solicitud ha sido enviada. Nuestro equipo te contactará en las próximas horas.");
+      const rawQuote = new URLSearchParams(window.location.search).get("quote")
+      || btoa(JSON.stringify({
+          areaM2: quote?.areaM2,
+          estimatedCostCents: quote?.estimatedCostCents,
+          depositCents: quote?.depositCents,
+          currency: quote?.currency || "eur",
+        }));
+
+    // переход на страницу «Gracias»
+    const lead = data?.leadId ? `lead=${encodeURIComponent(data.leadId)}&` : "";
+      window.top?.location.assign(`/gracias?${lead}quote=${encodeURIComponent(rawQuote)}`);
+    } catch (err) {
+      console.error(err);
+      alert("Error al enviar la solicitud. Inténtalo de nuevo.");
+    }
+  };
 
       // очистка полей
       setMarinaInput("");
