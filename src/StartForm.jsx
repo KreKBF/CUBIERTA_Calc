@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 
-// Список марин: регион, название, город/описание
+// Список марин
 const MARINAS = [
   // Andalucía
   { region: "Andalucía", name: "Puerto Banús", city: "Marbella, Costa del Sol" },
@@ -9,11 +9,9 @@ const MARINAS = [
   { region: "Andalucía", name: "Puerto Deportivo de Estepona", city: "Estepona, Málaga" },
   { region: "Andalucía", name: "IGY Málaga Marina", city: "Málaga" },
   { region: "Andalucía", name: "Alcaidesa Marina", city: "Cádiz / La Línea de la Concepción" },
-
   // Catalunya
   { region: "Catalunya", name: "Marina Port Vell", city: "Barcelona" },
   { region: "Catalunya", name: "Port Tarraco", city: "Tarragona" },
-
   // Comunitat Valenciana
   { region: "Comunitat Valenciana", name: "Marina Alicante", city: "Alicante" },
   { region: "Comunitat Valenciana", name: "Marina Miramar", city: "Santa Pola" },
@@ -30,34 +28,27 @@ const MARINAS = [
   { region: "Comunitat Valenciana", name: "Club Náutico Vinaròs", city: "Vinaròs" },
 ];
 
-// Отсортируем: регион (алфавит, es) → название (алфавит, es)
+// сортировка
 const MARINA_OPTIONS = [...MARINAS].sort(
   (a, b) =>
     a.region.localeCompare(b.region, "es") ||
     a.name.localeCompare(b.name, "es")
 );
 
-// MVP: recibimos el cálculo como base64(JSON). Luego pasaremos a JWT con TTL.
+// quote из URL
 function useQuote() {
   const { search } = useLocation();
   const raw = new URLSearchParams(search).get("quote");
   return useMemo(() => {
     if (!raw) return null;
-    try {
-      const json = atob(raw);
-      return JSON.parse(json);
-    } catch {
-      return null;
-    }
+    try { return JSON.parse(atob(raw)); } catch { return null; }
   }, [raw]);
 }
 
 function moneyFmt(cents, currency = "eur", locale = "es-ES") {
   try {
-    return new Intl.NumberFormat(locale, {
-      style: "currency",
-      currency: currency.toUpperCase(),
-    }).format((cents || 0) / 100);
+    return new Intl.NumberFormat(locale, { style: "currency", currency: currency.toUpperCase() })
+      .format((cents || 0) / 100);
   } catch {
     return `${(cents || 0) / 100} ${currency || "eur"}`;
   }
@@ -65,19 +56,11 @@ function moneyFmt(cents, currency = "eur", locale = "es-ES") {
 
 export default function StartForm() {
   const quote = useQuote();
-
-  // «комбобокс»: текст + подсказки
   const [marinaInput, setMarinaInput] = useState("");
-
   const [form, setForm] = useState({
-    name: "",
-    surname: "",
-    phone: "",
-    email: "",
-    marina: "",
-    boatMakeModel: "",
-    contactMethod: "call",
-    confirmDeposit: false,
+    name: "", surname: "", phone: "", email: "",
+    marina: "", boatMakeModel: "",
+    contactMethod: "call", confirmDeposit: false,
   });
 
   const onChange = (e) => {
@@ -87,28 +70,40 @@ export default function StartForm() {
 
   const submit = async (e) => {
     e.preventDefault();
-    if (!form.confirmDeposit) {
-      alert("Es necesario confirmar el anticipo del 10%.");
-      return;
-    }
+    if (!form.confirmDeposit) { alert("Es necesario confirmar el anticipo del 10%."); return; }
 
     const marinaFinal = marinaInput.trim();
 
     try {
       const payload = {
         ...form,
-        marina: marinaFinal, // итоговое значение
+        marina: marinaFinal,
         areaM2: quote?.areaM2,
         estimatedCostCents: quote?.estimatedCostCents,
         depositCents: quote?.depositCents,
         currency: quote?.currency || "eur",
       };
 
-      const res = await fetch("/api/leads", {
+      const reqInit = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
-      });
+      };
+
+      // 1) пробуем относительный путь (same-origin внутри iframe)
+      let res;
+      try {
+        res = await fetch("/api/leads", reqInit);
+      } catch (errRel) {
+        // 2) фолбэк: абсолютный URL (на случай особенностей виджета)
+        try {
+          res = await fetch("https://cubierta-calc.vercel.app/api/leads", reqInit);
+        } catch (errAbs) {
+          console.error("fetch error:", errRel, errAbs);
+          alert("Error al enviar la solicitud. Inténtalo de nuevo.");
+          return;
+        }
+      }
 
       let data = null;
       try { data = await res.json(); } catch {}
@@ -119,21 +114,31 @@ export default function StartForm() {
         return;
       }
 
-      // берём исходный quote из URL, чтобы передать на /gracias
+      // формируем URL «Gracias»
       const rawQuote =
         new URLSearchParams(window.location.search).get("quote") ||
-        btoa(
-          JSON.stringify({
-            areaM2: quote?.areaM2,
-            estimatedCostCents: quote?.estimatedCostCents,
-            depositCents: quote?.depositCents,
-            currency: quote?.currency || "eur",
-          })
-        );
+        btoa(JSON.stringify({
+          areaM2: quote?.areaM2,
+          estimatedCostCents: quote?.estimatedCostCents,
+          depositCents: quote?.depositCents,
+          currency: quote?.currency || "eur",
+        }));
 
-      // переход на страницу «Gracias»
       const lead = data?.leadId ? `lead=${encodeURIComponent(data.leadId)}&` : "";
-      window.top?.location.assign(`/gracias?${lead}quote=${encodeURIComponent(rawQuote)}`);
+      const url = `/gracias?${lead}quote=${encodeURIComponent(rawQuote)}`;
+
+      // аккуратный редирект с fallback для sandbox-iframe
+      try {
+        if (window.top && window.top !== window.self) {
+          try { window.top.location.href = url; return; } catch (e) {/* sandbox blocked */ }
+        }
+        window.location.href = url; // внутри iframe
+      } catch (e) {
+        alert(
+          "Solicitud enviada. Si no se abre la página, usa este enlace:\n" +
+          new URL(url, window.location.origin).toString()
+        );
+      }
     } catch (err) {
       console.error(err);
       alert("Error al enviar la solicitud. Inténtalo de nuevo.");
@@ -177,13 +182,13 @@ export default function StartForm() {
             value={form.phone}
             onChange={onChange}
             autoComplete="tel"
-            pattern="^[+()\s-]*\d(?:[()\s-]*\d){6,}$"
+            pattern="^[+()\\s-]*\\d(?:[()\\s-]*\\d){6,}$"
             required
           />
           <input
             type="email"
             name="email"
-            placeholder="Correo electrónico (obligatorio)"
+            placeholder="Correo electrónico (обligatorio)"
             value={form.email}
             onChange={onChange}
             autoComplete="email"
@@ -193,12 +198,10 @@ export default function StartForm() {
 
         {/* Marina + Marca/Modelo — 2 колонки */}
         <div style={{ display: "grid", gap: 12, gridTemplateColumns: "1fr 1fr" }}>
-          {/* Columna 1: Marina combobox (input + datalist) */}
           <div>
             <label style={{ display: "block", fontSize: 12, marginBottom: 4, color: "#555" }}>
               Marina de base
             </label>
-
             <input
               list="marinasList"
               value={marinaInput}
@@ -207,7 +210,6 @@ export default function StartForm() {
               style={{ width: "100%", padding: "8px 10px", borderRadius: 8, border: "1px solid #bbb" }}
               required
             />
-
             <datalist id="marinasList">
               {MARINA_OPTIONS.map((m) => {
                 const value = `${m.name} (${m.city})`;
@@ -220,9 +222,7 @@ export default function StartForm() {
               <div style={{ marginTop: 6 }}>
                 <a
                   href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(marinaInput.trim())}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ fontSize: 13 }}
+                  target="_blank" rel="noopener noreferrer" style={{ fontSize: 13 }}
                 >
                   Ver en Google Maps ↗
                 </a>
@@ -230,7 +230,6 @@ export default function StartForm() {
             )}
           </div>
 
-          {/* Columna 2: Marca/Modelo */}
           <div>
             <label style={{ display: "block", fontSize: 12, marginBottom: 4, color: "#555" }}>
               Marca / modelo de la embarcación (opcional)
@@ -249,14 +248,26 @@ export default function StartForm() {
           <div style={{ marginBottom: 6 }}>Método de contacto preferido</div>
           {["call", "whatsapp", "telegram"].map((m) => (
             <label key={m} style={{ marginRight: 12 }}>
-              <input type="radio" name="contactMethod" value={m} checked={form.contactMethod === m} onChange={onChange} />{" "}
+              <input
+                type="radio"
+                name="contactMethod"
+                value={m}
+                checked={form.contactMethod === m}
+                onChange={onChange}
+              />{" "}
               {m === "call" ? "Llamada" : m === "whatsapp" ? "WhatsApp" : "Telegram"}
             </label>
           ))}
         </div>
 
         <label>
-          <input type="checkbox" name="confirmDeposit" checked={form.confirmDeposit} onChange={onChange} required />{" "}
+          <input
+            type="checkbox"
+            name="confirmDeposit"
+            checked={form.confirmDeposit}
+            onChange={onChange}
+            required
+          />{" "}
           Confirmo que estoy listo para iniciar el proyecto abonando un anticipo de{" "}
           <b>{moneyFmt(quote?.depositCents || 0, quote?.currency || "eur")}</b>
         </label>
