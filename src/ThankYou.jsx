@@ -75,7 +75,7 @@ export default function ThankYou() {
           <small>Coste aproximado del conjunto:</small> <b>{estimate}</b>
         </div>
         <div>
-          <small>Anticipo (10%):</small> <b>{deposit}</b>
+          <small>Pago de arranque:</small> <b>{deposit}</b>
         </div>
 
         <p style={{ marginTop: 12 }}>
