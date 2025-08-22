@@ -72,6 +72,20 @@ a:hover, .btn-primary:hover { filter: brightness(0.95); }
   .cta-btn{ max-width: 100%; }
 }
 
+/* Адаптивная сетка: 2 колонки на десктопе, 1 колонка на мобиле */
+.grid-2{
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* Мобилки: стекаем поля в одну колонку */
+@media (max-width: 640px){
+  .grid-2{ grid-template-columns: 1fr; }
+  h1{ font-size: clamp(26px, 7vw, 42px); line-height: 1.1; } /* чуть компактней заголовок */
+  body::before{ filter: blur(3px) saturate(0.95) brightness(1.02); } /* помягче фон на мобиле */
+}
+
 /* === Global blurred background (all pages) === */
 html, body { height: 100%; }
 body { position: relative; background-color: var(--c-bg); } /* fallback-цвет */
