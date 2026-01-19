@@ -44,13 +44,32 @@ try {
 } catch (_) { /* nodemailer не установлен — ок */ }
 
 // ТРАНСПОРТ 2: Resend (fallback, если есть ключ)
-let resendClient = null;
-try {
-  const { Resend } = require("resend");
-  if (process.env.RESEND_API_KEY) {
-    resendClient = new Resend(process.env.RESEND_API_KEY);
+async function sendViaResendHTTP({ from, to, subject, html, text, headers }) {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return { ok: false, reason: 'resend-not-configured' };
+
+  const resp = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${key}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      from,
+      to: Array.isArray(to) ? to : [to],
+      subject,
+      html,
+      text,
+      headers
+    })
+  });
+
+  if (!resp.ok) {
+    const t = await resp.text().catch(() => '');
+    return { ok: false, error: new Error(`Resend HTTP ${resp.status}: ${t}`) };
   }
-} catch (_) { /* resend не установлен — ок */ }
+  return { ok: true };
+}
 
 // Утилиты
 function moneyFmt(cents = 0, currency = "eur", locale = "es-ES") {
@@ -242,14 +261,20 @@ Un gestor se pondrá en contacto contigo en las próximas horas.`;
           from, to: email, subject: subjectCl, text: textCl, html: htmlCl, headers
         }).catch(() => {});
       }
-    } else if (resendClient) {
-      await resendClient.emails.send({
-        from, to: [TO], bcc: [BCC], subject: subjectMgr, html: htmlMgr, text: textMgr, headers
+    } else {
+      // Fallback: Resend по HTTP
+      const r1 = await sendViaResendHTTP({
+        from, to: [TO], subject: subjectMgr, html: htmlMgr, text: textMgr, headers
       });
+      if (!r1.ok) {
+        console.error('Resend manager failed:', r1.error?.message || r1.reason);
+        return res.status(502).json({ error: `Mail provider error: ${r1.error?.message || r1.reason}` });
+      }
       if (email) {
-        await resendClient.emails.send({
+        const r2 = await sendViaResendHTTP({
           from, to: [email], subject: subjectCl, html: htmlCl, text: textCl, headers
-        }).catch(() => {});
+        });
+        if (!r2.ok) console.warn('Resend client mail failed:', r2.error?.message || r2.reason);
       }
     } else {
       return res.status(500).json({
