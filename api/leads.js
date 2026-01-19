@@ -231,35 +231,52 @@ Un gestor se pondrá en contacto contigo en las próximas horas.`;
     const headers = { "List-Unsubscribe": "<mailto:sales@cubierta.org?subject=unsubscribe>" };
 
     // менеджеру
+  let sent = false;
+  try {
     if (transporterSMTP) {
       await transporterSMTP.sendMail({
         from, to: TO, bcc: BCC, replyTo: email || undefined,
         subject: subjectMgr, text: textMgr, html: htmlMgr, headers
       });
+      sent = true;
       // клиенту
       if (email) {
-        await transporterSMTP.sendMail({
+        transporterSMTP.sendMail({
           from, to: email, subject: subjectCl, text: textCl, html: htmlCl, headers
-        }).catch(() => {});
+        }).catch(e => console.warn('SMTP client mail failed:', e?.message));
       }
     } else if (resendClient) {
-      await resendClient.emails.send({
+      const r1 = await resendClient.emails.send({
         from, to: [TO], bcc: [BCC], subject: subjectMgr, html: htmlMgr, text: textMgr, headers
       });
+      if (r1?.error) throw new Error(`Resend manager: ${r1.error?.message || 'unknown'}`);
+      sent = true;
       if (email) {
-        await resendClient.emails.send({
+        const r2 = await resendClient.emails.send({
           from, to: [email], subject: subjectCl, html: htmlCl, text: textCl, headers
-        }).catch(() => {});
+        });if (r2?.error) console.warn('Resend client mail error:', r2.error?.message);
       }
-    } else {
-      return res.status(500).json({
-        error: "No hay transporte de correo configurado. Configure SMTP_* o RESEND_API_KEY.",
-      });
     }
-
+  } catch (e) {
+    console.error('Mail send failed:', e);
+    return res.status(502).send(`Mail provider error: ${e?.message || e}`);
+  }
+  // если ни один транспорт не сработал
+  if (!sent) {
+    return res.status(502).send('Mail provider error: no transport configured (no SMTP and no RESEND_API_KEY)');
+  }
+    // успех
     return res.status(200).json({ ok: true, leadId, refCode });
   } catch (err) {
+    // Покажем в логах и вернем текст ошибки
+    const mask = s => (s ? String(s).slice(0,4) + '…' + String(s).slice(-4) : null);
     console.error("api/leads error:", err);
-    return res.status(500).json({ error: "Error del servidor" });
-  }
+    console.error("MAIL_ENV", {
+      hasSMTP: !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS),
+      hasResend: !!process.env.RESEND_API_KEY,
+      resendKey: mask(process.env.RESEND_API_KEY || ''),
+      mailFrom: process.env.MAIL_FROM
+    });
+    return res.status(500).send(err?.message || 'Server error');
+}
 };
