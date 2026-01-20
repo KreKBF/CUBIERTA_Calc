@@ -32,7 +32,8 @@ try {
 function mimeWord(s = '') {
   // RFC 2047: =?UTF-8?B?<base64>?=
   return `=?UTF-8?B?${Buffer.from(String(s), 'utf8').toString('base64')}?=`;
-  
+  }
+
 // Gmail API через OAuth2 + поддержка Bcc/Reply-To/headers и правильная кодировка заголовков
 async function sendViaGmailOAuth({ fromUser, fromDisplay, to, subject, html, text, bcc = [], replyTo, headers = {} }) {
   const { google } = require('googleapis');
