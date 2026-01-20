@@ -29,8 +29,12 @@ try {
   /* библиотека не установлена — режим без Redis */
 }
 
-// Gmail API через OAuth2 (refresh token)
-async function sendViaGmailOAuth({ fromUser, to, subject, html, text }) {
+function mimeWord(s = '') {
+  // RFC 2047: =?UTF-8?B?<base64>?=
+  return `=?UTF-8?B?${Buffer.from(String(s), 'utf8').toString('base64')}?=`;
+  
+// Gmail API через OAuth2 + поддержка Bcc/Reply-To/headers и правильная кодировка заголовков
+async function sendViaGmailOAuth({ fromUser, fromDisplay, to, subject, html, text, bcc = [], replyTo, headers = {} }) {
   const { google } = require('googleapis');
 
   const oAuth2 = new google.auth.OAuth2(
@@ -41,18 +45,31 @@ async function sendViaGmailOAuth({ fromUser, to, subject, html, text }) {
 
   const gmail = google.gmail({ version: 'v1', auth: oAuth2 });
 
-  const rawBody = [
-    `From: ${fromUser}`,
-    `To: ${Array.isArray(to) ? to.join(', ') : to}`,
-    `Subject: ${subject}`,
-    'MIME-Version: 1.0',
-    html ? 'Content-Type: text/html; charset=utf-8'
-         : 'Content-Type: text/plain; charset=utf-8',
-    '',
-    html || text || ''
-  ].join('\r\n');
+  const lines = [];
+  // From: с отображаемым именем (RFC 2047) + email
+  if (fromDisplay) {
+    lines.push(`From: ${mimeWord(fromDisplay)} <${fromUser}>`);
+  } else {
+    lines.push(`From: ${fromUser}`);
+  }
 
-  const raw = Buffer.from(rawBody).toString('base64')
+  lines.push(`To: ${Array.isArray(to) ? to.join(', ') : to}`);
+  if (bcc && bcc.length) lines.push(`Bcc: ${Array.isArray(bcc) ? bcc.join(', ') : bcc}`);
+  if (replyTo) lines.push(`Reply-To: ${replyTo}`);
+
+  // Кастомные заголовки
+  for (const [k, v] of Object.entries(headers || {})) lines.push(`${k}: ${v}`);
+
+  // ВАЖНО: Subject только ASCII → кодируем
+  lines.push(`Subject: ${mimeWord(subject)}`);
+  lines.push('MIME-Version: 1.0');
+  lines.push(html ? 'Content-Type: text/html; charset=UTF-8' : 'Content-Type: text/plain; charset=UTF-8');
+  lines.push('Content-Transfer-Encoding: 8bit'); // тело в UTF-8, ок для Gmail
+  lines.push('');
+  lines.push(html || text || '');
+
+  const raw = Buffer.from(lines.join('\r\n'))
+    .toString('base64')
     .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 
   await gmail.users.messages.send({ userId: 'me', requestBody: { raw } });
@@ -234,29 +251,32 @@ Un gestor se pondrá en contacto contigo en las próximas horas.`;
     // Отправка писем
     const TO = "sales@cubierta.org";
     const BCC = "es.rusakov.ka@gmail.com";
-    const fromDisplay = process.env.MAIL_FROM || "CUBIERTA <sales@cubierta.org>";
-    const headers = { "List-Unsubscribe": "<mailto:sales@cubierta.org?subject=unsubscribe>" };
-
-    // вычленим реальный адрес из "CUBIERTA <...>" для Gmail API (он шлёт "от имени пользователя")
-    const fromUser = process.env.GMAIL_SENDER
-      || (fromDisplay.match(/<([^>]+)>/)?.[1])
+    
+    // аккуратно парсим MAIL_FROM
+    const mf = process.env.MAIL_FROM || "CUBIERTA <sales@cubierta.org>";
+    const fromDisplay = mf.match(/^([^<]+)</)?.[1]?.trim() || "CUBIERTA";
+    const fromUser    = process.env.GMAIL_SENDER
+      || (mf.match(/<([^>]+)>/)?.[1])
       || "sales@cubierta.org";
 
-    const listUnsub = "<mailto:sales@cubierta.org?subject=unsubscribe>";
-    const extraHeaders = { "List-Unsubscribe": listUnsub };
+    const extraHeaders = {
+      "List-Unsubscribe": "<mailto:sales@cubierta.org?subject=unsubscribe>"
+    };
+
 
     let sent = false;
     try {
       // 1) менеджеру (основной путь — Gmail OAuth)
       await sendViaGmailOAuth({
-        fromUser,
-        to: [TO],
-        subject: subjectMgr,
-        html: htmlMgr,
-        text: textMgr,
-        bcc: [BCC],
-        replyTo: email || undefined,
-        headers: extraHeaders
+          fromUser,
+          fromDisplay,                    // ← добавили
+          to: [TO],
+          subject: subjectMgr,
+          html: htmlMgr,
+          text: textMgr,
+          bcc: [BCC],
+          replyTo: email || undefined,
+          headers: extraHeaders
       });
       sent = true;
 
@@ -264,6 +284,7 @@ Un gestor se pondrá en contacto contigo en las próximas horas.`;
       if (email) {
         sendViaGmailOAuth({
           fromUser,
+          fromDisplay,
           to: [email],
           subject: subjectCl,
           html: htmlCl,
