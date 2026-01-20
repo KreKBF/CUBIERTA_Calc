@@ -29,28 +29,35 @@ try {
   /* библиотека не установлена — режим без Redis */
 }
 
-// ТРАНСПОРТ 1: SMTP (если заданы SMTP_* переменные)
-let transporterSMTP = null;
-try {
-  const nodemailer = require("nodemailer");
-  if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
-    transporterSMTP = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT || 587),
-      secure: process.env.SMTP_SECURE === "true", // true для 465 (implicit TLS)
-      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-    });
-  }
-} catch (_) { /* nodemailer не установлен — ок */ }
+// Gmail API через OAuth2 (refresh token)
+async function sendViaGmailOAuth({ fromUser, to, subject, html, text }) {
+  const { google } = require('googleapis');
 
-// ТРАНСПОРТ 2: Resend (fallback, если есть ключ)
-let resendClient = null;
-try {
-  const { Resend } = require("resend");
-  if (process.env.RESEND_API_KEY) {
-    resendClient = new Resend(process.env.RESEND_API_KEY);
-  }
-} catch (_) { /* resend не установлен — ок */ }
+  const oAuth2 = new google.auth.OAuth2(
+    process.env.GOOGLE_OAUTH_CLIENT_ID,
+    process.env.GOOGLE_OAUTH_CLIENT_SECRET
+  );
+  oAuth2.setCredentials({ refresh_token: process.env.GMAIL_REFRESH_TOKEN });
+
+  const gmail = google.gmail({ version: 'v1', auth: oAuth2 });
+
+  const rawBody = [
+    `From: ${fromUser}`,
+    `To: ${Array.isArray(to) ? to.join(', ') : to}`,
+    `Subject: ${subject}`,
+    'MIME-Version: 1.0',
+    html ? 'Content-Type: text/html; charset=utf-8'
+         : 'Content-Type: text/plain; charset=utf-8',
+    '',
+    html || text || ''
+  ].join('\r\n');
+
+  const raw = Buffer.from(rawBody).toString('base64')
+    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+  await gmail.users.messages.send({ userId: 'me', requestBody: { raw } });
+  return { ok: true };
+}
 
 // Утилиты
 function moneyFmt(cents = 0, currency = "eur", locale = "es-ES") {
@@ -227,44 +234,48 @@ Un gestor se pondrá en contacto contigo en las próximas horas.`;
     // Отправка писем
     const TO = "sales@cubierta.org";
     const BCC = "es.rusakov.ka@gmail.com";
-    const from = process.env.MAIL_FROM || "CUBIERTA <sales@cubierta.org>";
+    const fromDisplay = process.env.MAIL_FROM || "CUBIERTA <sales@cubierta.org>";
     const headers = { "List-Unsubscribe": "<mailto:sales@cubierta.org?subject=unsubscribe>" };
 
-    // менеджеру
-  let sent = false;
-  try {
-    if (transporterSMTP) {
-      await transporterSMTP.sendMail({
-        from, to: TO, bcc: BCC, replyTo: email || undefined,
-        subject: subjectMgr, text: textMgr, html: htmlMgr, headers
+    // вычленим реальный адрес из "CUBIERTA <...>" для Gmail API (он шлёт "от имени пользователя")
+    const fromUser = process.env.GMAIL_SENDER
+      || (fromDisplay.match(/<([^>]+)>/)?.[1])
+      || "sales@cubierta.org";
+
+    const listUnsub = "<mailto:sales@cubierta.org?subject=unsubscribe>";
+    const extraHeaders = { "List-Unsubscribe": listUnsub };
+
+    let sent = false;
+    try {
+      // 1) менеджеру (основной путь — Gmail OAuth)
+      await sendViaGmailOAuth({
+        fromUser,
+        to: [TO],
+        subject: subjectMgr,
+        html: htmlMgr,
+        text: textMgr,
+        bcc: [BCC],
+        replyTo: email || undefined,
+        headers: extraHeaders
       });
       sent = true;
-      // клиенту
+
+      // 2) клиенту (best-effort, не валим всю операцию при ошибке)
       if (email) {
-        transporterSMTP.sendMail({
-          from, to: email, subject: subjectCl, text: textCl, html: htmlCl, headers
-        }).catch(e => console.warn('SMTP client mail failed:', e?.message));
+        sendViaGmailOAuth({
+          fromUser,
+          to: [email],
+          subject: subjectCl,
+          html: htmlCl,
+          text: textCl,
+          headers: extraHeaders
+        }).catch(e => console.warn('Gmail OAuth client mail failed:', e?.message));
       }
-    } else if (resendClient) {
-      const r1 = await resendClient.emails.send({
-        from, to: [TO], bcc: [BCC], subject: subjectMgr, html: htmlMgr, text: textMgr, headers
-      });
-      if (r1?.error) throw new Error(`Resend manager: ${r1.error?.message || 'unknown'}`);
-      sent = true;
-      if (email) {
-        const r2 = await resendClient.emails.send({
-          from, to: [email], subject: subjectCl, html: htmlCl, text: textCl, headers
-        });if (r2?.error) console.warn('Resend client mail error:', r2.error?.message);
-      }
+    } catch (e) {
+      console.error('Gmail OAuth manager failed:', e);
+      return res.status(502).send(`Mail provider error: ${e?.message || e}`);
     }
-  } catch (e) {
-    console.error('Mail send failed:', e);
-    return res.status(502).send(`Mail provider error: ${e?.message || e}`);
-  }
-  // если ни один транспорт не сработал
-  if (!sent) {
-    return res.status(502).send('Mail provider error: no transport configured (no SMTP and no RESEND_API_KEY)');
-  }
+
     // успех
     return res.status(200).json({ ok: true, leadId, refCode });
   } catch (err) {
